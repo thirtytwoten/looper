@@ -9,6 +9,8 @@
 <link href="fancy.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="https://rawgit.com/nexus-js/ui/master/dist/NexusUI.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
 <script type="text/javascript" src="./peer.js"></script>
 <script>
 // Connect to PeerJS, have server assign an ID instead of providing one
@@ -56,27 +58,19 @@ function connect(c) {
     $('.filler').hide();
     $('#connections').append(chatbox);
     c.on('data', function(data) {
-      messages.append('<div><span class="peer">' + c.peer + '</span>: ' + data +
-        '</div>');
-        });
-        c.on('close', function() {
-          alert(c.peer + ' has left the chat.');
-          chatbox.remove();
-          if ($('.connection').length === 0) {
-            $('.filler').show();
-          }
-          delete connectedPeers[c.peer];
-        });
-  } else if (c.label === 'file') {
-    c.on('data', function(data) {
-      // If we're getting a file, create a URL for it.
-      if (data.constructor === ArrayBuffer) {
-        var dataView = new Uint8Array(data);
-        var dataBlob = new Blob([dataView]);
-        var url = window.URL.createObjectURL(dataBlob);
-        $('#' + c.peer).find('.messages').append('<div><span class="file">' +
-            c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+      let d = JSON.parse(data);
+      console.log(d);
+      updateSeq(d);
+      // messages.append('<div><span class="peer">' + c.peer + '</span>: ' + data +
+      //   '</div>');
+    });
+    c.on('close', function() {
+      alert(c.peer + ' has left the chat.');
+      chatbox.remove();
+      if ($('.connection').length === 0) {
+        $('.filler').show();
       }
+      delete connectedPeers[c.peer];
     });
   }
   connectedPeers[c.peer] = 1;
@@ -158,6 +152,13 @@ window.onunload = window.onbeforeunload = function(e) {
     peer.destroy();
   }
 };
+
+function seqChange(data) {
+  let station = peer.connections[$('#sid').val()][0];
+  //console.log(data);
+  // e.g. {row: 2, column: 6, state: true}
+  station.send(JSON.stringify(data));
+}
 </script>
 </head> 
  
@@ -172,8 +173,15 @@ window.onunload = window.onbeforeunload = function(e) {
     </form>
   </div>
 
-  <div id="wrap"><div id="connections"><span class="filler">You are not connected to a station</span></div>
-    <div class="clear"></div></div>
+  <div id="wrap">
+    <div id="looper">
+      <div id="seq"></div>
+      <button onclick="start()">start</button>
+      <button onclick="stop()">stop</button>
+    </div>
+    <div id="connections"><span class="filler">You are not connected to a station</span></div>
+    <div class="clear"></div>
+  </div>
 <!-- 
   <div id="box" style="background: #fff; font-size: 18px;padding:40px 30px; text-align: center;">
     Drag file here to send to active connections.
@@ -190,5 +198,64 @@ NATs.
 
 <div class="log" style="color:#FF7500;text-shadow:none;padding:15px;background:#eee"><strong>Connection status</strong>:<br></div>
 </div> -->
+
+<script>
+  var t;
+  var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  var sequencer = new Nexus.Sequencer('#seq',{
+   'size': [800,200],
+   'mode': 'toggle',
+   'rows': 4,
+   'columns': 16
+  })
+
+  var keys = new Tone.Players({
+    "bass" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/bass.mp3",
+    "kick" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/kick.mp3",
+    "snare" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/snare.mp3",
+    "F#" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3",
+  }, {
+    "volume" : -10,
+    "fadeOut" : "64n",
+  }).toMaster();
+
+  var noteNames = ["bass", "kick", "snare", "F#"];
+  var loop = new Tone.Sequence(function(time, col){
+    t = time;
+    sequencer.next();
+  }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
+  Tone.Transport.start();
+
+  sequencer.on('step',function(v) {
+    console.log(v);
+    for (var i = 0; i < 4; i++){
+      if (v[i] === 1){
+        var vel = Math.random() * 0.5 + 0.5; //slightly randomized velocities
+        keys.get(noteNames[i]).start(t, 0, "32n", 0, vel);
+      }
+    }
+  })
+
+  sequencer.on('change',function(data) {
+    seqChange(data);
+    //socket.emit('seq change', data);
+  })
+
+  function start() {
+    loop.start();
+  }
+
+  function stop() {
+    loop.stop();
+  }
+
+  Nexus.context = audioCtx;
+
+  function updateSeq(data){
+    sequencer.matrix.set.cell(data.column, data.row, data.state);
+    $('#messages').append($('<li>').text("set [" + data.row + ", " + data.column + "] to " + data.state));
+  }
+</script>
 </body> 
 </html> 
