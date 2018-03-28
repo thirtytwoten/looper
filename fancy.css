@@ -26,6 +26,9 @@ body,html {
   border-color: #FF7500;
 }
 h1 {
+  margin: 10px;
+}
+h2 {
   font-size: 15px;
   padding: 5px 10px;
   margin: 0 -10px 0 -10px;

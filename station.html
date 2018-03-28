@@ -42,7 +42,7 @@ function connect(c) {
   // Handle a chat connection.
   if (c.label === 'chat') {
     var chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
-    var header = $('<h1></h1>').html('Send message to <strong>' + c.peer + '</strong>');
+    var header = $('<h2></h2>').html('Send message to <strong>' + c.peer + '</strong>');
     var messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
     chatbox.append(header);
     chatbox.append(messages);
@@ -191,6 +191,7 @@ function seqChange(data) {
 </head> 
  
 <body>
+  <h1> STATION </h1>
   <div id="actions">
     Your Station ID is <span id="pid"></span><br>
 <!--     Connect to a peer: <input type="text" id="rid" placeholder="Someone else's id"><input class="button" type="button" value="Connect" id="connect"><br><br> -->
