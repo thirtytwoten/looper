@@ -20,6 +20,52 @@
     text-align: left;
   }
 </style>
+<style>
+  #piano{
+    height: 320px;
+    width: 930px;
+  }
+
+  ul#keys {
+    height:24em; width:62em;
+    margin:1em auto; position:absolute;
+    border:0px solid #160801; border-radius:0em;
+    }
+  #keys li { margin:0; padding:0; list-style:none; position:relative; float:left; }
+  #keys li.a { margin:0 0 0 -1em;  }
+
+  li.white {
+    height:18em; width:3em; z-index:1;
+    border-left:1px solid #bbb;
+    border-bottom:1px solid #bbb;
+    border-radius:0 0 5px 5px;
+    box-shadow:-1px 0 0 rgba(255,255,255,0.8) inset, 0 0 5px #ccc inset, 0 0 3px rgba(0,0,0,0.2);
+    background-color: white;
+
+  }
+
+  li.white:active {
+    border-top:1px solid #777;
+    border-left:1px solid #999;
+    border-bottom:1px solid #999;
+    box-shadow:2px 0 3px rgba(0,0,0,0.1) inset, -5px 5px 20px rgba(0,0,0,0.2) inset,0 0 3px rgba(0,0,0,0.2);
+    background: linear-gradient(top, #fff 0%,#e9e9e9 100%);
+  }
+
+  li.black {
+    height:10em; width:2em; margin:0 0 0 -1em; z-index:2;
+    border:1px solid #000;
+    border-radius:0 0 3px 3px;
+    box-shadow:-1px -1px 2px rgba(255,255,255,0.2) inset, 0 -5px 2px 3px rgba(0,0,0,0.6) inset, 0 2px 4px rgba(0,0,0,0.5);
+    background:linear-gradient(45deg, #222 0%,#555 100%);
+  }
+
+  li.black:active {
+    box-shadow:-1px -1px 2px rgba(255,255,255,0.2) inset, 0 -2px 2px 3px rgba(0,0,0,0.6) inset, 0 1px 2px rgba(0,0,0,0.5);
+    background:linear-gradient(left, #444 0%,#222 100%);
+  }
+  
+</style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="https://rawgit.com/nexus-js/ui/master/dist/NexusUI.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
@@ -42,6 +88,42 @@
       <button onclick="start()">start</button>
       <button onclick="stop()">stop</button>
     </div>
+  </div>
+  <div id="synth">
+    <ul id="keys">
+      <li id="0" class="white a" > </li>
+      <li id="1" class="black a" ></li>
+      <li id="2" class="white a"></li>
+      <li id="3" class="black a"></li>
+      <li id="4" class="white a"></li>
+      <li id="5" class="black a"></li>
+      <li id="6" class="white a"></li>
+      <li id="7" class="white"></li>
+      <li id="8" class="black a"></li>
+      <li id="9" class="white a"></li>
+      <li id="10" class="black a"></li>
+      <li id="11" class="white a"></li>
+      <li id="12" class="white"></li>
+      <li id="13" class="black a"></li>
+      <li id="14" class="white a"></li>
+      <li id="15" class="black a"></li>
+      <li id="16" class="white a"></li>
+      <li id="17" class="black a"></li>
+      <li id="18" class="white a"></li>
+      <li id="19" class="white"></li>
+      <li id="20" class="black a"></li>
+      <li id="21" class="white a"></li>
+      <li id="22" class="black a"></li>
+      <li id="23" class="white a"></li>
+      <li id="24" class="white"></li>
+      <li id="25" class="black a"></li>
+      <li id="26" class="white a"></li>
+      <li id="27" class="black a"></li>
+      <li id="28" class="white a"></li>
+      <li id="29" class="black a"></li>
+      <li id="30" class="white a"></li>
+      <li id="31" class="white"> </li>
+    </ul>
   </div>
 
 <script type="text/javascript">
@@ -132,6 +214,23 @@
     sequencer.matrix.set.cell(data.column, data.row, data.state);
     //$('#messages').append($('<li>').text("set [" + data.row + ", " + data.column + "] to " + data.state));
   }
+</script>
+<script>
+  // PIANO
+  function pianoFrequency(id){
+  var notes = ["F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2", "C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
+     console.log(`${id}, ${notes[id]}`);
+     return notes[id];
+  };
+  $(document).ready(function(){
+    $("#keys li").click(function(){
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttackRelease(pianoFrequency(this.id), "2n");
+      });
+  });
+  // var t;
+  // var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 </script>
 </body>
 </html>
