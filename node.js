@@ -23,8 +23,14 @@ class Node {
         this.connect(c.peer);
       }
       c.on('data', (data) => {
-        console.log('data: ' + data);
-        displayMsg(c.peer, data);
+        // console.log('data: ' + data);
+        let d = JSON.parse(data);
+        if(d.type === 'msg'){
+          displayMsg(c.peer, d.data);
+        } else if (d.type === 'seqChange'){
+          updateSeq(d.data);
+          displayMsg(c.peer, `[${d.data.column},${d.data.row}] -> ${d.data.state}`);
+        } 
       });
       c.on('close', () => {
         displayMsg(c.peer, ' has left');
@@ -49,9 +55,18 @@ class Node {
   }
 
   transmitMsg(nodeId, msg) {
+    this.transmit(nodeId, {type: 'msg', data: msg})
+  }
+
+  transmitSeqChange(nodeId, data) {
+    this.transmit(nodeId, {type: 'seqChange', data: data});
+  }
+
+  transmit(nodeId, data) {
+    let str = JSON.stringify(data);
     let conns = this.node.connections[nodeId];
     for (let i = 0; i < conns.length; i++){
-      conns[i].send(msg);
+      conns[i].send(str);
     }
   }
 }
