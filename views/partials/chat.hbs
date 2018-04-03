@@ -1,0 +1,37 @@
+<style>
+  #chat {
+    background-color: #FFF;
+    border: 1px solid #ccc;
+    width: 250px;
+    padding: 5px;
+    float: right;
+  }
+  ul#log {
+    text-align: left;
+  }
+  form#send {
+    width: 100%;
+  }
+</style>
+
+<div id='chat'>
+  <ul id="log"></ul>
+  <form id="send">
+    <input type="text" id="text" placeholder="Enter message"><input class="button" type="submit" value="Send">
+  </form>
+</div>
+
+<script type="text/javascript">
+  // Send a chat message to all active connections.
+  $('#send').submit(function(e) {
+    e.preventDefault();
+    var msg = $('#text').val();
+    console.log(msg);
+    // node.connections.forEach((nodeId) => {
+    //   node.transmitMsg(nodeId, msg);
+    // });
+    // displayMsg(node.node.id, msg);
+    $('#text').val('');
+    $('#text').focus();
+  });
+</script>

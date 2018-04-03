@@ -21,6 +21,11 @@ app.get('/', function (req, res) {
     // template vars
   });
 });
+app.get('/station', function (req, res) {
+  res.render('station', {
+    // template vars
+  });
+});
 
 let server = app.listen(port);
 console.log(`app listening on port ${port}`);
