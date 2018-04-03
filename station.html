@@ -26,6 +26,7 @@
 <script type="text/javascript" src="./peer.js"></script>
 <script type="text/javascript" src="./node.js"></script>
 </head>
+
 <body>
   <h1 id='node-id'>Node Id: </h1>
   <h2 id='station-id'>Station Id: </h2>
@@ -42,6 +43,7 @@
       <button onclick="stop()">stop</button>
     </div>
   </div>
+
 <script type="text/javascript">
   let node = new Node(generateId());
   $('#node-id').text(`Node Id: ${node.node.id}`);
@@ -65,7 +67,9 @@
     $('#text').focus();
   });
 </script>
+
 <script>
+  // sequencer
   var t;
   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
