@@ -14,6 +14,7 @@
     padding: 22px 16px;
     width: 100%;
     border: none;
+    border-bottom: solid 1px #DDD;
     outline: none;
     text-align: left;
     cursor: pointer;
@@ -42,19 +43,19 @@
 <div class="tab">
   <button class="tablinks" id="sequencer-tab" onclick="openTab('sequencer')">Sequencer</button>
   <button class="tablinks" id="synth-tab" onclick="openTab('synth')">Synth</button>
-  <button class="tablinks" id="chat-tab" onclick="openTab('chat')">Chat</button>
+  <button class="tablinks" id="new-instrument-tab" onclick="openTab('new-instrument')">New Instrument...</button>
 </div>
 
-<div id="sequencer" class="tabcontent">
+<div id="sequencer-pane" class="tabcontent">
   {{>sequencer}}
 </div>
 
-<div id="synth" class="tabcontent">
+<div id="synth-pane" class="tabcontent">
   {{>synth}}
 </div>
 
-<div id="chat" class="tabcontent">
-  {{>chat}}
+<div id="new-instrument-pane" class="tabcontent">
+  {{>new-instrument}}
 </div>
 
 <script type="text/javascript">
@@ -74,7 +75,7 @@ function openTab(tabName) {
   }
 
   // activate clicked tab and show it's content
-  document.getElementById(tabName).style.display = "block";
+  document.getElementById(`${tabName}-pane`).style.display = "block";
   document.getElementById(`${tabName}-tab`).className += ' active';
 }
 </script>

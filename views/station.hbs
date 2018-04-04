@@ -1,7 +1,14 @@
 <h2 id='node-id'>Node Id: </h1>
 <h2 id='station-id'>Station Id: </h2>
 {{>tabs}}
-
+{{>chat}}
+<h2>TODO</h2>
+<ul>
+  <li>display all connected users</li>
+  <li>initialize instruments with data</li>
+  <li>display username and instrument name on tabs</li>
+  <li>add ability to listen/ignore instruments</li>
+</ul>
 <script type="text/javascript">
   let node = new Node(generateId());
   $('#node-id').text(`Node Id: ${node.node.id}`);
