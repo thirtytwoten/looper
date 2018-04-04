@@ -23,13 +23,13 @@ class Node {
         this.connect(c.peer);
       }
       c.on('data', (data) => {
-        // console.log('data: ' + data);
         let d = JSON.parse(data);
         if(d.type === 'msg'){
+          console.log('data: ' + data);
           displayMsg(c.peer, d.data);
         } else if (d.type === 'seqChange'){
           updateSeq(d.data);
-          displayMsg(c.peer, `[${d.data.column},${d.data.row}] -> ${d.data.state}`);
+          displayMsg(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`);
         } 
       });
       c.on('close', () => {
@@ -69,10 +69,6 @@ class Node {
       conns[i].send(str);
     }
   }
-}
-
-function displayMsg(peerId, msg){
-  $('ul#chat').append(`<li>${peerId}: ${msg}</li>`);
 }
 
 function generateId() {

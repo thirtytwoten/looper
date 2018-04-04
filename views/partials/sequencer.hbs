@@ -1,0 +1,72 @@
+<div id="wrap">
+  <div id="looper">
+    <div id="seq"></div>
+    <button onclick="start()">start</button>
+    <button onclick="stop()">stop</button>
+  </div>
+</div>
+
+<script>
+  // sequencer
+  var t;
+  var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  var sequencer = new Nexus.Sequencer('#seq',{
+   'size': [800,200],
+   'mode': 'toggle',
+   'rows': 4,
+   'columns': 16
+  })
+
+  var keys = new Tone.Players({
+    "bass" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/bass.mp3",
+    "kick" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/kick.mp3",
+    "snare" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/snare.mp3",
+    "F#" : "https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3",
+  }, {
+    "volume" : -10,
+    "fadeOut" : "64n",
+  }).toMaster();
+
+  var noteNames = ["bass", "kick", "snare", "F#"];
+  var loop = new Tone.Sequence(function(time, col){
+    t = time;
+    sequencer.next();
+  }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
+  Tone.Transport.start();
+
+  sequencer.on('step',function(v) {
+    // console.log(v);
+    for (var i = 0; i < 4; i++){
+      if (v[i] === 1){
+        var vel = Math.random() * 0.5 + 0.5; //slightly randomized velocities
+        keys.get(noteNames[i]).start(t, 0, "32n", 0, vel);
+      }
+    }
+  })
+
+  sequencer.on('change',function(data) {
+    seqChange(data);
+  })
+
+  function start() {
+    loop.start();
+  }
+
+  function stop() {
+    loop.stop();
+  }
+
+  Nexus.context = audioCtx;
+
+  function seqChange(data) {
+    // console.log('seqChange: ' + JSON.stringify(data));
+    node.connections.forEach( (nid) => {
+      node.transmitSeqChange(nid, data);
+    });
+  }
+
+  function updateSeq(data){
+    sequencer.matrix.set.cell(data.column, data.row, data.state);
+  }
+</script>

@@ -1,7 +1,16 @@
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<h2 id='node-id'>Node Id: </h1>
+<h2 id='station-id'>Station Id: </h2>
+{{>tabs}}
 
-  /////////////////////
- ///////station///////
-/////////////////////
-
-{{>chat}}
+<script type="text/javascript">
+  let node = new Node(generateId());
+  $('#node-id').text(`Node Id: ${node.node.id}`);
+  if(window.location.hash) {
+    // find station id from url hash
+    var stationId = window.location.hash.substring(1);
+    $('#station-id').text(`Station Id: ${stationId}`);
+    node.connect(stationId);
+  } else {
+    // no station id given
+  }
+</script>

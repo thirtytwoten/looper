@@ -1,17 +1,7 @@
+{{!-- global: node --}}
+
 <style>
-  #chat {
-    background-color: #FFF;
-    border: 1px solid #ccc;
-    width: 250px;
-    padding: 5px;
-    float: right;
-  }
-  ul#log {
-    text-align: left;
-  }
-  form#send {
-    width: 100%;
-  }
+
 </style>
 
 <div id='chat'>
@@ -22,16 +12,18 @@
 </div>
 
 <script type="text/javascript">
-  // Send a chat message to all active connections.
   $('#send').submit(function(e) {
     e.preventDefault();
     var msg = $('#text').val();
-    console.log(msg);
-    // node.connections.forEach((nodeId) => {
-    //   node.transmitMsg(nodeId, msg);
-    // });
-    // displayMsg(node.node.id, msg);
+    node.connections.forEach((nodeId) => {
+      node.transmitMsg(nodeId, msg);
+    });
+    displayMsg(node.node.id, msg);
     $('#text').val('');
     $('#text').focus();
   });
+
+  function displayMsg(peerId, msg){
+    $('ul#log').append(`<li>${peerId}: ${msg}</li>`);
+  }
 </script>
