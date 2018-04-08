@@ -1,6 +1,7 @@
-<h2 id='node-id'>Node Id: </h1>
-<h2 id='station-id'>Station Id: </h2>
-{{>tabs}}
+<h1 class = "neon" data-text="[Looper]">Looper</h1>
+<h2 id='node-id'>Node ID: </h1>
+<h2 id='station-id'>Station ID: </h2>
+{{>sequencerandsynth}}
 {{>chat}}
 <h2>TODO</h2>
 <ul>
@@ -21,3 +22,39 @@
     // no station id given
   }
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web:700');
+#body{
+  margin: 0;
+  padding: 0;
+  background: url('http://cdn.backgroundhost.com/backgrounds/subtlepatterns/asfalt.png');
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.neon {
+  margin: 0;
+  padding: 0 20px;
+  font-size: 6em;
+  color: #fff;
+  text-shadow: 0 0 20px #f441f1;
+}
+
+.neon: after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  padding: 0 20px;
+  z-index: -1;
+  color: #f441f1;
+  filter: blur(15px);
+}
+
+.neon: before {
+  content: ''
+  width: 100%; height: 100%;
+  background: #d641f4;
+  z-index: -2;
+
+}
+</style>
