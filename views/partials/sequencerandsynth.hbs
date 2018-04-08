@@ -4,6 +4,11 @@
     position: relative;
 
   }
+  #sequencer-wrapper{
+    position: relative;
+    overflow: hidden;
+    height: 220px; width: 1400px;
+  }
   #piano{
     height: 320px;
     width: 1200px;
@@ -14,24 +19,30 @@
   #seq {
     position: relative;
     top: 0%; left: 5%;
+    width: 95%
     z-index: 0;
   }
 
   #sequencer-tab-labels-container {
     position: relative;
-    top: 0%; left: 0%;
+    width: 5%;
     height: 200px;
-    width: 100px;
     z-index:-1;
   }
 
-  ul#sequencer-tab-labels-container{
-    height:100%; width:100px;
-    margin:1em auto; position:relative;
-    border:0px solid #160801; border-radius:0em;
-    float:right;
+  #sequencer-tab-labels-container ul{
+    height:100%; width: 100%;
+    position:absolute;
+    top: 0px; left: 0px;
+    float:left;
   }
-  #sequencer-tab-labels-container li { margin:0; padding:0; list-style:none; position:relative; float:right; }
+  #sequencer-tab-labels-container li {
+    margin:0; padding:0;
+    height: 37.5px;
+    background-color: #323156;
+    list-style:none;
+    position:relative;
+    float:left; }
   ul#keys {
     height:100%; width:1200px;
     margin:1em auto; position:relative;
@@ -82,16 +93,18 @@
 <div id="wrap">
   <div id="looper">
     <div id="sequencer-label" class = "neon"><p>SEQUENCER</p></div>
-    <div id="sequencer-tab-labels-container">
-      <ul id ="sequencer-tab-labels">
-      <li id="F#-label">F#</li>
-      <li id="Snare-label">Snare</li>
-      <li id="kick-label">Kick</li>
-      <li id="bass-label">Bass</li>
-      <li id="piano-label">Piano</li>
-    </ul>
-    </div>
-    <div id="seq"></div>
+    <div id="sequencer-wrapper">
+      <div id="sequencer-tab-labels-container">
+          <ul id="sequencer-tab-labels">
+            <li id="F#-label">F#</li>
+            <li id="Snare-label">Snare</li>
+            <li id="kick-label">Kick</li>
+            <li id="bass-label">Bass</li>
+            <li id="piano-label">Piano</li>
+        </ul>
+      </div>
+      <div id="seq"></div>
+  </div>
     <button onclick="start()">start</button>
     <button onclick="stop()">stop</button>
     <<div id="piano"></div>
