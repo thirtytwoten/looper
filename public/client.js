@@ -1,4 +1,4 @@
-//global: io  //todo... browserfy... var io = require('socket.io-client');
+let io = require('socket.io-client');
 let socket = io.connect(`${window.location.hostname}:${window.location.port}`);
 
 socket.on('connect', function(){console.log(`socket connected`)});
