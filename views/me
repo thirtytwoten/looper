@@ -1,0 +1,42 @@
+
+  var img = document.getElementById("Station").innerHTML;
+  img.setAttribute("scr","https://openclipart.org/image/800px/svg_to_png/257267/Polished-Onyx-Musical-Notes-Typography-No-Background.png");
+  img.setAttribute("width","228");
+  img.setAttribute("height","228");
+  document.getElementById("Station").appendChild(img);
+
+var Images = ["https://openclipart.org/image/800px/svg_to_png/257267/Polished-Onyx-Musical-Notes-Typography-No-Background.png", "https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png", "https://img00.deviantart.net/7b74/i/2011/301/1/a/music_png_background_by_realmofheaven-d4e8zzv.png","http://pngimagesfree.com/Music/Microphone-Background-with-music-notes.png", "https://banner.kisspng.com/20180213/xjw/kisspng-rock-music-rhythm-rock-music-background-5a8389a5ac27c1.4945215315185698937052.jpg", "https://banner.kisspng.com/20180202/juq/kisspng-background-music-musical-background-5a74bc323f6627.3646797915175997942597.jpg", "https://banner.kisspng.com/20171207/d6e/trendy-music-element-vector-5a290ac8d40d87.8386642615126391768686.jpg"];
+//var me = window.getElementsByTagName("img")[0].src;
+
+
+<div id ="Station" style="display: inline-block;">
+<img id = "image" src='https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png' alt='Station' hspace= "20" width='200' height='228' border="1"/>
+<br><br>
+<a href="http://localhost:9000/station"><figcaption style="text-align: center; font-weight: bold;">Station 1</figcaption></a>
+</div>
+<div id ="Station" style="display: inline-block;">
+<img id = "image" src='https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png' alt='Station' hspace= "20" width='200' height='228' border="1"/>
+<br><br>
+<a href="http://localhost:9000/station"><figcaption style="text-align: center; font-weight: bold;">Station 1</figcaption></a>
+</div>
+<div id ="Station" style="display: inline-block;">
+<img id = "image" src='https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png' alt='Station' hspace= "20" width='200' height='228' border="1"/>
+<br><br>
+<a href="http://localhost:9000/station"><figcaption style="text-align: center; font-weight: bold;">Station 1</figcaption> </a>
+</div>
+<br><br><br>
+<div id ="Station" style="display: inline-block;">
+<img id = "image" src='https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png' alt='Station' hspace= "20" width='200' height='228' border="1"/>
+<br><br>
+<a href="http://localhost:9000/station"><figcaption style="text-align: center; font-weight: bold;">Station 1</figcaption></a>
+</div>
+<div id ="Station" style="display: false;">
+<img id = "image" src='https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png' alt='Station' hspace= "20" width='200' height='228' border="1"/>
+<br><br>
+<a href="http://localhost:9000/station"><figcaption style="text-align: center; font-weight: bold;">Station 1</figcaption></a>
+</div>
+<div id ="Station" style="display: false;">
+<img id = "image" src='https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png' alt='Station' hspace= "20" width='200' height='228' border="1"/>
+<br><br>
+<a href="http://localhost:9000/station"><figcaption style="text-align: center; font-weight: bold;">Station 1</figcaption></a>
+</div>

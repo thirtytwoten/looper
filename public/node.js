@@ -16,8 +16,11 @@ class Node {
     n.on('open', (id) => {
       console.log('open - id: ' + id);
     });
+    
+
     n.on('connection', (c) => {
       console.log('connection: ' + c.peer);
+       
       if(!this.connections.includes(c.peer)){
         // make back&forth connection
         this.connect(c.peer);
@@ -52,6 +55,8 @@ class Node {
       //     serialization: 'none',
       //     metadata: {message: 'hi i want to chat with you!'}
       //   });
+      
+
   }
 
   transmitMsg(nodeId, msg) {
