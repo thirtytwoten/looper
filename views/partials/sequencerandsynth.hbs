@@ -145,7 +145,7 @@
 
   //creates new Sequencer
   var sequencer = new Nexus.Sequencer('#seq',{
-   'size': [1200,200],
+   'size': [1000,200],
    'mode': 'toggle',
    'rows': 5, //Changed the number of rows to 5
    'columns': 32 //Changed this to make it 32 columns instead of 16
@@ -189,14 +189,15 @@ function playNote (time, col){
 //MARK:- SEQUENCER CODE
   sequencer.on('step',function(v) {
     //console.log(v);
-    for (var i = 0; i < 5; i++){
+    for (var i = 0; i < 4; i++){
       if (v[i] === 1 && i != 0){ //For the first 4 rows
         var vel = Math.random() * 0.5 + 0.5; //slightly randomized velocities
         keys.get(noteNames[i]).start(t, 0, "32n", 0, vel);
+        console.log(noteNames[i]);
       }
       else if (v[i] === 1 && i === 0){ //Handling the last row for piano sounds
         synth.triggerAttackRelease(piano_on_sequencer[count], "8n");
-        //console.log(piano_on_sequencer[count]);
+        console.log(piano_on_sequencer[count]);
       }
     }
     if (count === 31) {
