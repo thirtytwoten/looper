@@ -36,8 +36,8 @@ let options = {
 
 app.use('/ps', ExpressPeerServer(server, options));
 
-let sm = require('./StationManager');
-let stationManager = new sm(([{id: 'test'}]));
+let stationManager = require('./StationManager');
+stationManager.addStation({id: 'test'});
 console.log(stationManager.stations);
 
 let io = require('socket.io')(server);
