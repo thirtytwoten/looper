@@ -36,54 +36,19 @@ let options = {
 
 app.use('/ps', ExpressPeerServer(server, options));
 
-let StationServer = {
-  stations: []
-}
-
-// const io = require('socket.io')(server, {
-//   path: '/ss',
-//   // serveClient: false,
-//   // // below are engine.IO options
-//   // pingInterval: 10000,
-//   // pingTimeout: 5000,
-//   // cookie: false
-// });
-
+let sm = require('./StationManager');
+let stationManager = new sm(([{id: 'test'}]));
+console.log(stationManager.stations);
 
 let io = require('socket.io')(server);
 io.on('connection', function(client) {
   console.log('client connected');
 
-  // let syncRate = 100;
-  // setInterval(function(){
-  //   let gameData = game.getData()
-  //   client.emit('sync', gameData);
-  //   client.broadcast.emit('sync', gameData);
-  // }, syncRate);
+  // client.emit('sync', StationManager.stations);
 
-  // //send existing information out to client
-  // client.emit('sync', game.getData());
-
-  // client.on('joinGame', function(finger){
-  //   console.log(finger.playerName + ' joined the game');
-  //   client.emit('addPlayer', { playerName: finger.playerName, isLocal: true } ); //// client can just call this?
-  //   //client.broadcast.emit('addPlayer', { playerName: finger.playerName, isLocal: false } );
-  //   //^should be picked up in sync calls
-  // });
-
-  // client.on('sync', function(data){
-  //   if(data.finger){
-  //     game.syncFinger(data.finger);
-  //     //Broadcast data to clients
-  //     // client.emit('sync', game.getData());
-  //     // client.broadcast.emit('sync', game.getData());
-  //   }
-  // });
-
-  // client.on('leaveGame', function(fingerName){
-  //   console.log(fingerName + ' has left the game');
-  //   game.removeFinger(fingerName);
-  //   //client.broadcast.emit('removeFinger', fingerName); // should automatically be removed when it is not in the sync data
+  // client.on('createStation', function(station){
+  //   StationManager.addStation(station);
+  //   client.boradcast.emit('sync', StationManager.stations);
   // });
 
 });
