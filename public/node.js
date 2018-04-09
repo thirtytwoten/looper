@@ -1,11 +1,13 @@
 // dependent on peer.js
 
 let peerServerInfo = {host: 'localhost', port: 9000, path: '/ps'};
+let MAX_CONN = 5;
 
 class Node {
   constructor(nodeId){
     this.node = new Peer(nodeId, peerServerInfo);
     this.configureNode(this.node);
+	this.host_station = nodeId;
     this.connections = [];
   }
 
@@ -44,8 +46,48 @@ class Node {
   }
 
   connect(nodeId) {
-    let c = this.node.connect(nodeId);
-    this.connections.push(c.peer);
+	  
+	//let c = this.node.connect(nodeId);
+	//this.connections.push(c.peer);
+	
+	let target_conns = this.node.connections[nodeId];
+	if (target_conns) {
+		let size_msg = "Number of peers connected: " + target_conns.length;
+		console.log(size_msg);
+	}
+	if (!target_conns || (target_conns.length < MAX_CONN)) {
+		let c = this.node.connect(nodeId);
+		this.connections.push(c.peer);
+		let msg = "Connected directly to station: " + nodeId;
+		console.log(msg); 
+	} else {
+		// Perform BFS to find listening peer with space
+		var has_found = false;
+		var queue = [nodeId];
+		while (queue.length > 0) {
+			let temp_node = queue.shift();
+			let temp_conns = this.node.connections[temp_node];
+			
+			if (!temp_conns || (temp_conns.length < MAX_CONN)) {
+				let c = this.node.connect(temp_node);
+				this.connections.push(c.peer);
+				this.host_station = nodeId;
+				let msg = "Connected to peer: " + temp_node + " With host station: " + nodeId;
+				console.log(msg);
+				has_found = true;
+				break;
+			}
+
+			for (let i = 0; i < temp_conns.length; i++) {
+			   queue.push(temp_conns[i].peer);
+			}
+			
+		}
+		if (!has_found) {
+			console.log("Error, all peers in this station are at Capacity");
+		}
+		
+	}
     //e.g. w/ options...
       // var c = peer.connect(requestedPeer, {
       //     label: 'chat',
