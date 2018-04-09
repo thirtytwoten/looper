@@ -1,15 +1,21 @@
+<style>
+
+</style>
+<div id="back">
+<div id="front">
 <h2 id='node-id'>Node Id: </h1>
 <h2 id='station-id'>Station Id: </h2>
+{{>tabs}}
+{{>chat}}
 <h2>TODO</h2>
 <ul>
-  <li>display master-view of loop</li>
   <li>display all connected users</li>
   <li>initialize instruments with data</li>
   <li>display username and instrument name on tabs</li>
   <li>add ability to listen/ignore instruments</li>
 </ul>
-{{>tabs}}
-{{>chat}}
+</div>
+</div>
 <script type="text/javascript">
   let node = new Node(generateId());
   $('#node-id').text(`Node Id: ${node.node.id}`);
@@ -18,7 +24,18 @@
     var stationId = window.location.hash.substring(1);
     $('#station-id').text(`Station Id: ${stationId}`);
     node.connect(stationId);
+    var stations = {
+      IDs: []
+    };
+    stations.IDs.push($('#node-id'));
+    var json = JSON.stringify(stations);
+    const fs = require('fs');
+    fs.writeFileSync('./Stations.json', json, 'utf8');
+    log.console($('#node-id'));
+    log.console("here");
+
   } else {
     // no station id given
   }
 </script>
+
