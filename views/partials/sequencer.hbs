@@ -62,7 +62,7 @@
   Nexus.context = audioCtx;
 
   function seqChange(data) {
-    // console.log('seqChange: ' + JSON.stringify(data));
+    console.log('seqChange: ' + JSON.stringify(data));
     node.connections.forEach( (nid) => {
       node.transmitSeqChange(nid, data);
     });
