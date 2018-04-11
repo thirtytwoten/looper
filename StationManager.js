@@ -32,27 +32,26 @@ function createStation(name, connectedPeers) {
   stations.push(new Station(name, connectedPeers));
 }
 
-function getStation(stationId){
-  return stations.find((s) => s.id === stationId);
+function getStation(stationName){
+  return stations.find((s) => s.name === stationName);
 }
 
-function getIndex(stationId){
-  return stations.findIndex((s) => s.id === stationId);
+function getIndex(stationName){
+  return stations.findIndex((s) => s.name === stationName);
 }
 
-function removeStation(stationId) {
-  stations.splice(this.getIndex(stationId), )
-  delete getStation(stationId);
+function removeStation(stationName) {
+  stations.splice(this.getIndex(stationName), 1);
 }
 
-function joinStation(nodeId, stationId) {
-  getStation(stationId).join(nodeId);
+function joinStation(nodeId, stationName) {
+  getStation(stationName).join(nodeId);
 }
 
-function leaveStation(nodeId, stationId) {
-  let station = getStation(stationId);
+function leaveStation(nodeId, stationName) {
+  let station = getStation(stationName);
   if (station.leave(nodeId) < 1) {
-    removeStation(stationId);
+    removeStation(stationName);
   }
 }
 

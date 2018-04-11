@@ -20,42 +20,39 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', function (req, res) {
-  res.render('central', { layout: 'min', graphData: `${stationManager.networkData()}` });
+  res.render('central', { layout: 'min' });
 });
-app.get('/station', function (req, res) {
-  res.render('station', {});
+app.get('/station/:name', function (req, res) {
+  let name = req.params.name;
+  station = stationManager.getStation(name);
+  res.render('station', { station: JSON.stringify(station) });
 });
 app.get('/matrix', function (req, res) {
   res.render('sound_matrix', { layout: 'min' });
 });
 
 let server = app.listen(port);
-console.log(`app listening on port ${port}`);
+
 app.use('/ps', ExpressPeerServer(server, {debug: true}));
 
-// console.log(stationManager.stations);
+console.log(`app listening on port ${port}`);
 
 let io = require('socket.io')(server);
 io.on('connection', function(client) {
   console.log('client connected');
+  client.emit('updateNetwork', `${stationManager.networkData()}`);
 
   client.on('createStation', function(name, nodeId){
     stationManager.createStation(name, [nodeId]);
-    console.log(stationManager.stations);
+    //client.emit('updateNetwork', `${stationManager.networkData()}`);
   });
 
   client.on('joinStation', function(name, nodeId){
     let status = stationManager.joinStation(nodeId, name);
+    //client.emit('updateNetwork', `${stationManager.networkData()}`);
   });
-
-
-  // client.emit('sync', StationManager.stations);
-
-  // client.on('createStation', function(station){
-  //   StationManager.addStation(station);
-  //   client.boradcast.emit('sync', StationManager.stations);
-  // });
 
 });
 
