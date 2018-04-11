@@ -17,7 +17,7 @@ app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res) {
-  res.render('central', { layout: 'min' });
+  res.render('central', { layout: 'min', graphData: '{"nodes":[{"id":"a","group":0,"host":true},{"id":"b","group":0,"host":false},{"id":"c","group":0,"host":false},{"id":"d","group":0,"host":false},{"id":"a2","group":1,"host":true},{"id":"b2","group":1,"host":false},{"id":"c2","group":1,"host":false},{"id":"d2","group":1,"host":false}],"links":[{"source":"b","target":"a","value":1},{"source":"c","target":"a","value":1},{"source":"d","target":"a","value":1},{"source":"b2","target":"a2","value":1},{"source":"c2","target":"a2","value":1},{"source":"d2","target":"a2","value":1}]}' });
 });
 app.get('/station', function (req, res) {
   res.render('station', {});
@@ -40,12 +40,8 @@ io.on('connection', function(client) {
   console.log('client connected');
 
   client.on('createStation', function(name, nodeId){
-    let status = stationManager.createStation(name, [nodeId]);
-    if(!status.success){
-      console.log(status.msg);
-    } else {
-      console.log(stationManager.stations);
-    }
+    stationManager.createStation(name, [nodeId]);
+    console.log(stationManager.stations);
   });
 
   client.on('joinStation', function(name, nodeId){

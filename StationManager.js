@@ -1,15 +1,16 @@
 let stations = [];
+let n = 0;
 
 class Station {
   constructor(name, connectedPeers){
-    this.id = name;
+    this.id = n++;
     this.name = name;
     this.connectedPeers = connectedPeers;
     this.createdAt = Date.now();
   }
 
   host(){
-    return connectedPeers[0];
+    return this.connectedPeers[0];
   }
 
   age(){
@@ -27,14 +28,8 @@ class Station {
   }
 }
 
-// TODO... name check doesn't work
 function createStation(name, connectedPeers) {
-  if(getIndex(name) > 0){
-    return {success: false, msg: `station named '${name}' already exists`};
-  } else {
-    stations.push(new Station(name, connectedPeers));
-    return {success: true, msg: 'success'};
-  }
+  stations.push(new Station(name, connectedPeers));
 }
 
 function getStation(stationId){
@@ -61,6 +56,22 @@ function leaveStation(nodeId, stationId) {
   }
 }
 
+function networkData() {
+  let json = {nodes: [], links: []};
+  stations.forEach((s)=>{
+    let hostName = s.host();
+    s.connectedPeers.forEach((p)=>{
+      if(p === hostName){
+        json.nodes.push({id: p, group: s.id, host: true });
+      } else {
+        json.nodes.push({id: p, group: s.id, host: false });
+        json.links.push({source: p, target: hostName, value: 1});
+      }
+    });
+  });
+  return json;
+}
+
 module.exports = {
-  stations, getStation, createStation, joinStation, leaveStation, removeStation
+  stations, getStation, createStation, joinStation, leaveStation, removeStation, networkData
 }
