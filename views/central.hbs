@@ -26,6 +26,13 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
 <script>
+
+let networkData = {"nodes":[{"id":"a","group":0,"host":true},{"id":"b","group":0,"host":false},{"id":"c","group":0,"host":false},{"id":"d","group":0,"host":false},{"id":"a2","group":1,"host":true},{"id":"b2","group":1,"host":false},{"id":"c2","group":1,"host":false},{"id":"d2","group":1,"host":false}],"links":[{"source":"b","target":"a","value":1},{"source":"c","target":"a","value":1},{"source":"d","target":"a","value":1},{"source":"b2","target":"a2","value":1},{"source":"c2","target":"a2","value":1},{"source":"d2","target":"a2","value":1}]};
+
+drawNetwork(networkData);
+
+function drawNetwork(networkData) {
+
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
@@ -46,11 +53,6 @@ var simulation = d3.forceSimulation()
   .force("center", d3.forceCenter(width / 2, height / 2))
   .force('collision', d3.forceCollide(45));
 
-let networkData = {"nodes":[{"id":"a","group":0,"host":true},{"id":"b","group":0,"host":false},{"id":"c","group":0,"host":false},{"id":"d","group":0,"host":false},{"id":"a2","group":1,"host":true},{"id":"b2","group":1,"host":false},{"id":"c2","group":1,"host":false},{"id":"d2","group":1,"host":false}],"links":[{"source":"b","target":"a","value":1},{"source":"c","target":"a","value":1},{"source":"d","target":"a","value":1},{"source":"b2","target":"a2","value":1},{"source":"c2","target":"a2","value":1},{"source":"d2","target":"a2","value":1}]};
-
-drawNetwork(networkData);
-
-function drawNetwork(networkData) {
   svg.selectAll("*").remove();
   graph = networkData;
   console.log(graph);

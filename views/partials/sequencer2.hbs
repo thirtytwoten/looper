@@ -2,9 +2,9 @@
 
 <div id="wrap">
   <div id="looper">
-    <div id="seq"></div>
     <button onclick="start()">start</button>
     <button onclick="stop()">stop</button>
+    <div id="seq"></div>
   </div>
 </div>
 
@@ -34,6 +34,9 @@
       context,
       16
     );
+
+  matrix.sequencer.colorize("accent","#ff0");
+  matrix.sequencer.colorize("fill","#323156");
 
   matrix.sequencer.on('change',function(data) {
     console.log('seqChange: ' + JSON.stringify(data));
