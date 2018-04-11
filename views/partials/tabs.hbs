@@ -3,8 +3,8 @@
     float: left;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
-    width: 15%;
-    height: 400px;
+    width: 100px;
+    height: 800px;
   }
 
   .tab button {
@@ -33,9 +33,9 @@
     float: left;
     padding: 0px 12px;
     border: 1px solid #ccc;
-    width: 80%;
+    width: 800px;
     border-left: none;
-    height: 400px;
+    height: 800px;
     display: none;
   }
 </style>
@@ -44,6 +44,7 @@
   <button class="tablinks" id="sequencer-tab" onclick="openTab('sequencer')">Sequencer</button>
   <button class="tablinks" id="synth-tab" onclick="openTab('synth')">Synth</button>
   <button class="tablinks" id="new-instrument-tab" onclick="openTab('new-instrument')">New Instrument...</button>
+  <button class="tablinks" id="chat-tab" onclick="openTab('chat')">Chat/Log</button>
 </div>
 
 <div id="sequencer-pane" class="tabcontent">
@@ -56,6 +57,10 @@
 
 <div id="new-instrument-pane" class="tabcontent">
   {{>new-instrument}}
+</div>
+
+<div id="chat-pane" class="tabcontent">
+  {{>chat}}
 </div>
 
 <script type="text/javascript">

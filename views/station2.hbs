@@ -1,6 +1,5 @@
 <h2 id='node-id'>Node Id: </h1>
 <h2 id='station-id'>Station Id: </h2>
-{{>tabs}}
 <script type="text/javascript">
   let node = new Node(generateId());
   $('#node-id').text(`Node Id: ${node.node.id}`);
@@ -13,3 +12,5 @@
     // no station id given
   }
 </script>
+{{>sequencer2}}
+{{>chat}}

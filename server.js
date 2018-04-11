@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
   res.render('central', {});
 });
 app.get('/station', function (req, res) {
-  res.render('station', {
+  res.render('station2', {
   });
 });
 
