@@ -1,6 +1,6 @@
 // dependent on peer.js
 
-let peerServerInfo = {host: 'localhost', port: 9000, path: '/ps'};
+let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 
 class Node {
   constructor(nodeId){
