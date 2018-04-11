@@ -1,0 +1,27 @@
+{
+  "nodes": [
+    {"id": "a", "group": 1, "host": true},
+    {"id": "b", "group": 1, "host": false},
+    {"id": "c", "group": 1, "host": false},
+    {"id": "d", "group": 1, "host": false},
+    {"id": "a2", "group": 2, "host": true},
+    {"id": "b2", "group": 2, "host": false},
+    {"id": "c2", "group": 2, "host": false},
+    {"id": "d2", "group": 2, "host": false},
+    {"id": "a3", "group": 3, "host": true},
+    {"id": "b3", "group": 3, "host": false},
+    {"id": "c3", "group": 3, "host": false},
+    {"id": "d3", "group": 3, "host": false}
+  ],
+  "links": [
+    {"source": "a", "target": "b", "value": 1},
+    {"source": "a", "target": "c", "value": 8},
+    {"source": "a", "target": "d", "value": 10},
+    {"source": "a2", "target": "b2", "value": 1},
+    {"source": "a2", "target": "c2", "value": 8},
+    {"source": "a2", "target": "d2", "value": 10},
+    {"source": "a3", "target": "b3", "value": 1},
+    {"source": "a3", "target": "c3", "value": 8},
+    {"source": "a3", "target": "d3", "value": 10}
+  ]
+}

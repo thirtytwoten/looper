@@ -17,7 +17,7 @@ app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res) {
-  res.render('central', {});
+  res.render('central', { layout: 'min' });
 });
 app.get('/station', function (req, res) {
   res.render('station', {});
