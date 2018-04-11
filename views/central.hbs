@@ -35,6 +35,9 @@ socket.on('disconnect', function(){console.log(`socket disconnected`)});
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+
+<div id='usernameData' data-username={{username}}></div>
+<h5>hello {{username}}!</h5>
 <div id="prompt">
   <div class="input-group">
       <input id="station-name" type="text" class="form-control" placeholder="Name your station" autocomplete="off">
@@ -63,8 +66,9 @@ socket.on('disconnect', function(){console.log(`socket disconnected`)});
 $(document).ready( function(){
 
   $('#create').click( function(){
-    stationName = $('#station-name').val();
-    socket.emit('createStation', stationName, 'nodeId-test');
+    let stationName = $('#station-name').val();
+    let userName = $('#usernameData').data('username');
+    socket.emit('createStation', stationName, userName);
     location.href=`./station/${stationName}`;
   });
 

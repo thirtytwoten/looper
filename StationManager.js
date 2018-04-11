@@ -44,13 +44,13 @@ function removeStation(stationName) {
   stations.splice(this.getIndex(stationName), 1);
 }
 
-function joinStation(nodeId, stationName) {
-  getStation(stationName).join(nodeId);
+function joinStation(stationName, userName) {
+  getStation(stationName).join(userName);
 }
 
-function leaveStation(nodeId, stationName) {
+function leaveStation(stationName, userName) {
   let station = getStation(stationName);
-  if (station.leave(nodeId) < 1) {
+  if (station.leave(userName) < 1) {
     removeStation(stationName);
   }
 }

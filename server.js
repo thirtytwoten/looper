@@ -34,12 +34,12 @@ app.get('/sess/:username', function (req, res) {
   res.redirect('/central');
 });
 app.get('/central', function (req, res) {
-  res.render('central', { layout: 'min' });
+  res.render('central', { username: req.session.username, layout: 'min' });
 });
 app.get('/station/:name', function (req, res) {
   let name = req.params.name;
   station = stationManager.getStation(name);
-  res.render('station', { station: JSON.stringify(station) });
+  res.render('station', { station: JSON.stringify(station), username: req.session.username });
 });
 app.get('/matrix', function (req, res) {
   res.render('sound_matrix', { layout: 'min' });
@@ -56,13 +56,13 @@ io.on('connection', function(client) {
   console.log('client connected');
   client.emit('updateNetwork', `${stationManager.networkData()}`);
 
-  client.on('createStation', function(name, nodeId){
-    stationManager.createStation(name, [nodeId]);
+  client.on('createStation', function(stationName, userName){
+    stationManager.createStation(stationName, [userName]);
     //client.emit('updateNetwork', `${stationManager.networkData()}`);
   });
 
-  client.on('joinStation', function(name, nodeId){
-    let status = stationManager.joinStation(nodeId, name);
+  client.on('joinStation', function(stationName, userName){
+    let status = stationManager.joinStation(stationName, userName);
     //client.emit('updateNetwork', `${stationManager.networkData()}`);
   });
 
