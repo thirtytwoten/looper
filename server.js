@@ -19,9 +19,21 @@ let hbs = ehbs.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
+let session = require('express-session');
+app.use(session({secret:'secret-sauce',resave: false,
+  saveUninitialized: true}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
+  res.render('landing', { layout: 'min' });
+});
+app.get('/sess/:username', function (req, res) {
+  req.session.username = req.params.username;
+  console.log(req.session);
+  res.redirect('/central');
+});
+app.get('/central', function (req, res) {
   res.render('central', { layout: 'min' });
 });
 app.get('/station/:name', function (req, res) {
