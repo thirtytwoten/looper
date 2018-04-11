@@ -82,17 +82,38 @@ border-radius:0 0 3px 3px;
 </div>
 {{>synth}}
 <div id="seqLeftCol" style="width: 650px;float: left;">{{>sequencer2}}</div>
-<div id="chatRtCol">{{>chat}}</div>
+<div id="chatRtCol">
+  {{>chat}}
+  <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
+  <h3>Enter Friend's Email:<h3>
+  <input id="email" type="text" maxlength="64" style="width:98%;" value="" />
+  <input type="submit" value="Invite" />
+  </form>
+</div>
+
 
 <script type="text/javascript">
+  let stationId;
   let node = new Node(generateId());
   $('#node-id').text(`Node Id: ${node.node.id}`);
   if(window.location.hash) {
     // find station id from url hash
-    var stationId = window.location.hash.substring(1);
+    stationId = window.location.hash.substring(1);
     $('#station-id').text(`Station Id: ${stationId}`);
     node.connect(stationId);
+
   } else {
     // no station id given
+  }
+
+  function sendMail() {
+  var email = document.getElementById("email").value;
+  var body = '"'+username +'" would like you to join his/her station!\n\n Click the link below to access the station! \n\n\n http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#'+stationId +"\n";
+  //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
+  var link = "mailto:"+ email
+               + "?cc="
+               + "&subject=" + escape("BIGE Invitation!")
+               + "&body=" + escape(body);
+  window.location.href = link;
   }
 </script>
