@@ -10,12 +10,72 @@
   stroke-width: 1.5px;
 }
 
+#prompt {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  margin-left: -200px;
+  width: 400px;
+  background-color: #eee;
+  z-index: 2;
+  padding: 10px;
+}
 </style>
-<svg width="960" height="600"></svg>
+
+{{!-- <script src="./bundle.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
+<script>
+let socket = io.connect(`${window.location.hostname}:${window.location.port}`);
+
+socket.on('connect', function(){console.log(`socket connected`)});
+socket.on('event', function(data){console.log(`event: ${data}`)});
+socket.on('disconnect', function(){console.log(`socket disconnected`)});
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
-<script>
+<div id="prompt">
+  <div class="input-group">
+      <input id="station-name" type="text" class="form-control" placeholder="Name your station" autocomplete="off">
+      <span class="input-group-btn">
+        <input id="create" class="btn btn-primary" type="submit" value="create station">
+      </span>
+    </div>
+{{!--     <div class="station-template-select col-md-12">
+      <label>Choose a station template:</label>
+        <ul class="station-selection">
+          <li class="selected" data-template="1">
+            <img src="img/preview-tank-1.png">
+          </li>
+          <li data-template="2">
+            <img src="img/preview-tank-2.png">
+          </li>
+          <li data-template="3">
+            <img src="img/preview-tank-3.png">
+          </li>
+        </ul>
+    </div> --}}
+</div>
+<svg width="960" height="600"></svg>
 
+<script>
+$(document).ready( function(){
+
+  $('#create').click( function(){
+    stationName = $('#station-name').val();
+    socket.emit('createStation', stationName, 'nodeId-test');
+  });
+
+  // $('ul.station-template-select li').click( function(){
+  //   $('.station-template-select li').removeClass('selected')
+  //   $(this).addClass('selected');
+  //   stationTemplate = $(this).data('template');
+  // });
+
+});
+</script>
+<script>
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
@@ -32,8 +92,6 @@ function generateColors(n){
   }
   return colors;// shuffle? colors.sort(function() { 0.5 - Math.random() }
 };
-
-
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(100))
@@ -103,3 +161,4 @@ function dragended(d) {
 }
 
 </script>
+

@@ -27,8 +27,14 @@ class Station {
   }
 }
 
+// TODO... name check doesn't work
 function createStation(name, connectedPeers) {
-  stations.push(new Station(name, connectedPeers));
+  if(getIndex(name) > 0){
+    return {success: false, msg: `station named '${name}' already exists`};
+  } else {
+    stations.push(new Station(name, connectedPeers));
+    return {success: true, msg: 'success'};
+  }
 }
 
 function getStation(stationId){
@@ -56,5 +62,5 @@ function leaveStation(nodeId, stationId) {
 }
 
 module.exports = {
-  stations, getStation, addStation, removeStation
+  stations, getStation, createStation, joinStation, leaveStation, removeStation
 }

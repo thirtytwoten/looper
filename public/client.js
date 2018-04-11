@@ -5,3 +5,9 @@ socket.on('connect', function(){console.log(`socket connected`)});
 socket.on('event', function(data){console.log(`event: ${data}`)});
 socket.on('disconnect', function(){console.log(`socket disconnected`)});
 
+
+// //todo
+// //require jquery
+// $(window).on('beforeunload', function(){
+//   socket.emit('leaveGame', tankName);
+// });

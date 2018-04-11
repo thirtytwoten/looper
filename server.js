@@ -32,12 +32,26 @@ console.log(`app listening on port ${port}`);
 app.use('/ps', ExpressPeerServer(server, {debug: true}));
 
 let stationManager = require('./StationManager');
-stationManager.addStation({id: 'test'});
+
 // console.log(stationManager.stations);
 
 let io = require('socket.io')(server);
 io.on('connection', function(client) {
   console.log('client connected');
+
+  client.on('createStation', function(name, nodeId){
+    let status = stationManager.createStation(name, [nodeId]);
+    if(!status.success){
+      console.log(status.msg);
+    } else {
+      console.log(stationManager.stations);
+    }
+  });
+
+  client.on('joinStation', function(name, nodeId){
+    let status = stationManager.joinStation(nodeId, name);
+  });
+
 
   // client.emit('sync', StationManager.stations);
 

@@ -6269,13 +6269,12 @@ yeast.decode = decode;
 module.exports = yeast;
 
 },{}],44:[function(require,module,exports){
-var io = require('socket.io-client');
+let io = require('socket.io-client');
 let socket = io.connect(`${window.location.hostname}:${window.location.port}`);
 
-socket.on('connect', function(){console.log(`socket connected`)});
+socket.on('connect', function(){console.log(`socket connected`); console.log(socket)});
 socket.on('event', function(data){console.log(`event: ${data}`)});
 socket.on('disconnect', function(){console.log(`socket disconnected`)});
-
 
 },{"socket.io-client":30}],45:[function(require,module,exports){
 
