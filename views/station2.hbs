@@ -108,7 +108,7 @@ border-radius:0 0 3px 3px;
 
   function sendMail() {
   var email = document.getElementById("email").value;
-  var body = '"'+username +'" would like you to join his/her station!\n\n Click the link below to access the station! \n\n\n http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#'+stationId +"\n";
+  var body = "I would like you to join his/her station!\n\n Click the link below to access the station! \n\n\n http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#"+stationId +"\n";
   //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
   var link = "mailto:"+ email
                + "?cc="
