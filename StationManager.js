@@ -69,7 +69,7 @@ function networkData() {
       }
     });
   });
-  return json;
+  return JSON.stringify(json);
 }
 
 module.exports = {

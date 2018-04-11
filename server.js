@@ -4,6 +4,11 @@ let ExpressPeerServer = require('peer').ExpressPeerServer;
 let ehbs = require('express-handlebars');
 
 let port = process.argv[2] || 9000;
+let stationManager = require('./StationManager');
+//stubb
+stationManager.createStation('bleepbloop', ['a', 'b', 'c', 'd']);
+stationManager.createStation('bloppBLEEP', ['a2', 'b2', 'c2', 'd2']);
+
 let app = express();
 let hbs = ehbs.create({
   extname: '.hbs',
@@ -11,13 +16,12 @@ let hbs = ehbs.create({
   helpers: {},
   partiailsDir: 'views/partials'
 });
-
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res) {
-  res.render('central', { layout: 'min', graphData: '{"nodes":[{"id":"a","group":0,"host":true},{"id":"b","group":0,"host":false},{"id":"c","group":0,"host":false},{"id":"d","group":0,"host":false},{"id":"a2","group":1,"host":true},{"id":"b2","group":1,"host":false},{"id":"c2","group":1,"host":false},{"id":"d2","group":1,"host":false}],"links":[{"source":"b","target":"a","value":1},{"source":"c","target":"a","value":1},{"source":"d","target":"a","value":1},{"source":"b2","target":"a2","value":1},{"source":"c2","target":"a2","value":1},{"source":"d2","target":"a2","value":1}]}' });
+  res.render('central', { layout: 'min', graphData: `${stationManager.networkData()}` });
 });
 app.get('/station', function (req, res) {
   res.render('station', {});
@@ -26,12 +30,9 @@ app.get('/matrix', function (req, res) {
   res.render('sound_matrix', { layout: 'min' });
 });
 
-
 let server = app.listen(port);
 console.log(`app listening on port ${port}`);
 app.use('/ps', ExpressPeerServer(server, {debug: true}));
-
-let stationManager = require('./StationManager');
 
 // console.log(stationManager.stations);
 
