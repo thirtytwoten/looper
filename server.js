@@ -12,14 +12,23 @@ let hbs = ehbs.create({
   partiailsDir: 'views/partials'
 });
 
+let session = require('express-session');
+app.use(session({secret:'secret-sauce', resave: false,
+  saveUninitialized: true}));
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res) {
+  req.session.userid = generateId();
+  console.log(req.session.userid);
   res.render('central', {layout: false, stations: JSON.stringify(stationManager.stationData())});
 });
-app.get('/station', function (req, res) {
+app.get('/station/:userid', function (req, res) {
+  if(req.session.userid === req.params.userid){
+    console.log('same')
+  }
   res.render('station', {layout: false});
 });
 
@@ -44,4 +53,14 @@ io.on('connection', function(client) {
   // });
 
 });
+
+function generateId() {
+  var str = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++)
+    str += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return str;
+}
 
