@@ -17,11 +17,10 @@ app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res) {
-  res.render('central', {layout: 'main2', stations: JSON.stringify(stationManager.stationData())});
+  res.render('central', {layout: false, stations: JSON.stringify(stationManager.stationData())});
 });
 app.get('/station', function (req, res) {
-  res.render('station2', {
-  });
+  res.render('station', {layout: false});
 });
 
 let server = app.listen(port);
