@@ -13,18 +13,15 @@
 <script type="text/javascript" src="../peer.js"></script>
 <script type="text/javascript" src="../user.js"></script>
 <script type="text/javascript" src="../SoundMatrix.js"></script>
+<script type="text/javascript" src="../station.js"></script>
 </head>
 <body>
   <div id='userid' data-userid={{userid}}></div>
-  <div id='stationid' data-stationid={{stationid}}></div>
+  <div id='station' data-station={{station}}></div>
   <div id="header">
     <div id="looper-heading">
       <h1 id='looper' class = "neon" data-text="[Looper]">Looper</h1>
     </div>
-  <div id="node-headings">
-    <h2 id='node-id'>Node ID: </h1>
-    <h2 id='station-id'>Station ID: </h2>
-  </div>
 </div>
 
 <div id="wrap">
@@ -35,28 +32,31 @@
   </div>
 </div>
 
+<div id="station-info">
+  <h2 id='node-id'>Node ID: </h1>
+  <h2 id='station-id'>Station ID: </h2>
+  <ul id='peers'><ul>
+</div>
+
 <script type="text/javascript">
   let userid = $('#userid').data('userid');
-  let stationid = $('#stationid').data('stationid');
+  let stationData = $('#station').data('station');
+  let station = new Station(stationData, null);
+  let stationid = station.ownerid;
   let user = new User(userid);
-  $('#node-id').text(`You are: ${user.node.id}`);
-  $('#station-id').text(`Station Id: ${stationid}`);
-  if(userid === stationid){
-    serverLink.emit('createStation', stationid);
-  } else {
-    serverLink.emit('joinStation', stationid);
-    user.connect(stationid);
-  }
 
-  function sendMail() {
-  var email = document.getElementById("email").value;
-  var body = "I would like you to join his/her station!\n\n Click the link below to access the station! \n\n\n http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#"+stationId +"\n";
-  //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
-  var link = "mailto:"+ email
-               + "?cc="
-               + "&subject=" + escape("BIGE Invitation!")
-               + "&body=" + escape(body);
-  window.location.href = link;
+  // set station info
+  $('#node-id').text(`You are: ${user.node.id}`);
+  $('#station-id').text(`Station owner: ${station.ownerid}`);
+  station.connectedPeers.forEach((p)=>{
+    $('ul#peers').append(`<li>${p}</li>`)
+  });
+
+  if(userid !== stationid){
+    station.join(user);
+    // serverLink.emit('joinStation', stationid, userid);
+    // user.connect(stationid);
+    // console.log('joinStation');
   }
 </script>
 
@@ -154,12 +154,6 @@
       });
   });
 </script>
-
-<form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
-<h3>Enter Friend's Email:<h3>
-<input id="email" type="text" maxlength="64" value="" />
-<input type="submit" value="Invite" />
-</form>
 
 <br/> <br/> <br/> 
 </body>

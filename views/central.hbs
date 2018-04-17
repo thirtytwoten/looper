@@ -29,7 +29,7 @@
     stations.forEach((s)=>{
       console.log(s);
       $('ul#stations').append(`<li><a href="/station/${s.ownerid}">${s.name}(${s.connectedPeers.length+1})</a></li>`)
-    })
+    });
   }
 
   updateStations(stationData);

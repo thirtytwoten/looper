@@ -30,12 +30,14 @@ app.get('/', function (req, res) {
   res.render('central', {layout: false, userid: req.session.userid, stations: JSON.stringify(stationManager.stationData())});
 });
 app.get('/station/:stationid', function (req, res) {
-  if(req.session.userid === req.params.stationid){
-    // station owner -- create station
+  let ownerid = req.params.stationid;
+  let station = stationManager.getStation(ownerid);
+  if (req.session.userid === ownerid || station) {
+    station = station || stationManager.createStation(ownerid);
+    res.render('station', {layout: false, userid: req.session.userid, station: JSON.stringify(station.export())});
   } else {
-    // station listener -- needs to connect
+    res.end(`station '${ownerid}' does not exist`);
   }
-  res.render('station', {layout: false, userid: req.session.userid, stationid: req.params.stationid});
 });
 
 let server = app.listen(port);
@@ -49,14 +51,16 @@ io.on('connection', function(client) {
 
   // client.emit('sync', stationManager.stations);
 
-  client.on('createStation', function(ownerid){
-    stationManager.createStation(ownerid);
-    client.broadcast.emit('sync', stationManager.stations);
-  });
+  // client.on('createStation', function(ownerid){
+  //   stationManager.createStation(ownerid);
+  //   client.broadcast.emit('sync', stationManager.stations);
+  // });
 
   client.on('joinStation', function(stationownerid, userid){
+    console.log(`joinStation: sid ${stationownerid}, uid {userid}`);
     stationManager.joinStation(stationownerid, userid);
     client.broadcast.emit('sync', stationManager.stations);
+    console.log(stationManager.getStation(stationownerid).export());
   });
 
 });

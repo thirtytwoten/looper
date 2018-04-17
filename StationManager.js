@@ -10,10 +10,6 @@ class Station {
     this.createdAt = Date.now();
   }
 
-  owner(){
-    return this.ownerid;
-  }
-
   age(){
     return Date.now() - this.createdAt;
   }
@@ -28,10 +24,23 @@ class Station {
       this.connectedPeers.splice(i,1);
     }
   }
+
+  export() {
+    return {
+      name: this.name,
+      ownerid: this.ownerid,
+      connectedPeers: this.connectedPeers,
+      createdAt: this.createdAt,
+      beats_per_minute: 120,
+      loop_cycle: 16
+    }
+  }
 }
 
 function createStation(ownerid) {
-  stations.push(new Station(ownerid));
+  let station = new Station(ownerid);
+  stations.push(station);
+  return station;
 }
 
 function getStation(ownerid){
@@ -73,13 +82,7 @@ function networkData() {
 function stationData() {
   let arr = [];
   stations.forEach((s)=>{
-    arr.push({
-      name: s.name,
-      ownerid: s.ownerid,
-      connectedPeers: s.connectedPeers,
-      beats_per_minute: 120,
-      loop_cycle: 16
-    });
+    arr.push(s.export());
   });
   return arr;
 }
