@@ -2,9 +2,9 @@
 
 let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 
-class Node {
-  constructor(nodeId){
-    this.node = new Peer(nodeId, peerServerInfo);
+class User {
+  constructor(userid){
+    this.node = new Peer(userid, peerServerInfo);
     this.configureNode(this.node);
     this.connections = [];
   }
@@ -69,14 +69,8 @@ class Node {
       conns[i].send(str);
     }
   }
-}
 
-function generateId() {
-  var str = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < 6; i++)
-    str += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return str;
+  getId() {
+    return this.node.id;
+  }
 }

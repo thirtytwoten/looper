@@ -12,6 +12,10 @@ let hbs = ehbs.create({
   partiailsDir: 'views/partials'
 });
 
+let stationManager = require('./StationManager');
+// stationManager.createStation('test', []);
+// console.log(stationManager.stations);
+
 let session = require('express-session');
 app.use(session({secret:'secret-sauce', resave: false,
   saveUninitialized: true}));
@@ -23,23 +27,21 @@ app.set('view engine', 'hbs');
 app.get('/', function (req, res) {
   req.session.userid = generateId();
   console.log(req.session.userid);
-  res.render('central', {layout: false, stations: JSON.stringify(stationManager.stationData())});
+  res.render('central', {layout: false, session: JSON.stringify(req.session), stations: JSON.stringify(stationManager.stationData())});
 });
-app.get('/station/:userid', function (req, res) {
-  if(req.session.userid === req.params.userid){
-    console.log('same')
+app.get('/station/:stationid', function (req, res) {
+  if(req.session.userid === req.params.stationid){
+    // station owner -- create station
+  } else {
+    // station listener -- needs to connect
   }
-  res.render('station', {layout: false});
+  res.render('station', {layout: false, userid: req.session.userid, stationid: req.params.stationid});
 });
 
 let server = app.listen(port);
 console.log(`app listening on port ${port}`);
 
 app.use('/ps', ExpressPeerServer(server, {debug: true}));
-
-let stationManager = require('./StationManager');
-// stationManager.createStation('test', []);
-// console.log(stationManager.stations);
 
 let io = require('socket.io')(server);
 io.on('connection', function(client) {

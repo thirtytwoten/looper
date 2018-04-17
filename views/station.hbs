@@ -99,10 +99,12 @@ border-radius:0 0 3px 3px;
 <script src="https://rawgit.com/nexus-js/ui/master/dist/NexusUI.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
 <script type="text/javascript" src="../peer.js"></script>
-<script type="text/javascript" src="../node.js"></script>
+<script type="text/javascript" src="../user.js"></script>
 <script type="text/javascript" src="../SoundMatrix.js"></script>
 </head>
 <body>
+  <div id='userid' data-userid={{userid}}></div>
+  <div id='stationid' data-stationid={{stationid}}></div>
   <div id="header">
     <div id="looper-heading">
       <h1 id='looper' class = "neon" data-text="[Looper]">Looper</h1>
@@ -170,17 +172,15 @@ border-radius:0 0 3px 3px;
 </form>
 
 <script type="text/javascript">
-  let stationId;
-  let node = new Node(generateId());
-  $('#node-id').text(`Node Id: ${node.node.id}`);
-  if(window.location.hash) {
-    // find station id from url hash
-    stationId = window.location.hash.substring(1);
-    $('#station-id').text(`Station Id: ${stationId}`);
-    node.connect(stationId);
-
+  let userid = $('#userid').data('userid');
+  let stationid = $('#stationid').data('stationid');
+  let user = new User(userid);
+  $('#node-id').text(`You are: ${user.node.id}`);
+  $('#station-id').text(`Station Id: ${stationid}`);
+  if(userid === stationid){
+    // user is owner of station
   } else {
-    // no station id given
+    user.connect(stationid);
   }
 
   function sendMail() {
