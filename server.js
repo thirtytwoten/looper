@@ -27,7 +27,7 @@ app.set('view engine', 'hbs');
 app.get('/', function (req, res) {
   req.session.userid = generateId();
   console.log(req.session.userid);
-  res.render('central', {layout: false, session: JSON.stringify(req.session), stations: JSON.stringify(stationManager.stationData())});
+  res.render('central', {layout: false, userid: req.session.userid, stations: JSON.stringify(stationManager.stationData())});
 });
 app.get('/station/:stationid', function (req, res) {
   if(req.session.userid === req.params.stationid){
@@ -47,12 +47,17 @@ let io = require('socket.io')(server);
 io.on('connection', function(client) {
   console.log('client connected');
 
-  // client.emit('sync', StationManager.stations);
+  // client.emit('sync', stationManager.stations);
 
-  // client.on('createStation', function(station){
-  //   StationManager.addStation(station);
-  //   client.boradcast.emit('sync', StationManager.stations);
-  // });
+  client.on('createStation', function(ownerid){
+    stationManager.createStation(ownerid);
+    client.broadcast.emit('sync', stationManager.stations);
+  });
+
+  client.on('joinStation', function(stationownerid, userid){
+    stationManager.joinStation(stationownerid, userid);
+    client.broadcast.emit('sync', stationManager.stations);
+  });
 
 });
 

@@ -5,12 +5,11 @@
 <link rel="stylesheet" href="../style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 <meta http-equiv="Content-Language" content="en-us">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
-<script type="text/javascript" src="../bundle.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="https://rawgit.com/nexus-js/ui/master/dist/NexusUI.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
+<script type="text/javascript" src="../serverLink.js"></script>
 <script type="text/javascript" src="../peer.js"></script>
 <script type="text/javascript" src="../user.js"></script>
 <script type="text/javascript" src="../SoundMatrix.js"></script>
@@ -43,8 +42,9 @@
   $('#node-id').text(`You are: ${user.node.id}`);
   $('#station-id').text(`Station Id: ${stationid}`);
   if(userid === stationid){
-    // user is owner of station
+    serverLink.emit('createStation', stationid);
   } else {
+    serverLink.emit('joinStation', stationid);
     user.connect(stationid);
   }
 
@@ -95,6 +95,11 @@
 
   function updateSeq(data){
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
+  }
+
+  function displayMsg(peerId, msg){
+    console.log(`${peerId}: ${msg}`);
+    //$('ul#log').append(`<li>${peerId}: ${msg}</li>`);
   }
 </script>
 

@@ -5,129 +5,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 <meta http-equiv="Content-Language" content="en-us">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
-<script type="text/javascript" src="../bundle.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
+<script type="text/javascript" src="../serverLink.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-<script src="https://rawgit.com/nexus-js/ui/master/dist/NexusUI.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
-<style>
 
-#back {
-  min-width:900px;
-  min-height:500px;
-  padding:220px;
-  background-image: url("http://www.zgjm-org.com/data/out/10/IMG_410656.jpg");
-}
-#front {
-  padding:10px;
-  background-color: white;
-} 
-#image {
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    background-color: white;
-}
-</style>
 </head>
 <body>
 
 <div id='stationData' data-stations={{stations}}></div>
-<div id="back">
-<div id="front">
-<h1>BigE: A Peer-to-Peer Web Application for Creative Audio Streaming</h1>
-<hr/>
-<h2>Welcome to our website, we hope you enjoy ...! <h2>
-</h2>Start streaming by creating your own station:</h2>
-<br/><br/><br/>
-<div align="center">
-<img src="https://i.pinimg.com/originals/b1/6a/df/b16adfb995a675fb1d744a908e7aaa58.jpg
-" height="400" width="400" >
+<div id='userid' data-userid={{userid}}></div>
+<h1>CENTRAL</h1>
+<a id='urStationLink' href='#'>Go to your station</a>
 
-<a href="http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station"> <h2>Click here to create your station!</h2></a>
-</div>
-<br/><br/>
-<h3>You can join any of the following stations:</h3>
-<br/>
+<h2>STATIONS<h3>
+<ul id='stations'></ul>
 
-<div id ="Outter" >
-</div>
+<script>
+  let userid = $('#userid').data('userid');
+  let stationData = $('#stationData').data('stations');
 
-<script type="text/javascript">
-  var Images = ["https://openclipart.org/image/800px/svg_to_png/257267/Polished-Onyx-Musical-Notes-Typography-No-Background.png",
-  "https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png", 
-  "https://img00.deviantart.net/7b74/i/2011/301/1/a/music_png_background_by_realmofheaven-d4e8zzv.png",
-  "http://www.cumbernauldy.org.uk/Tech%20Music%20Media%20Index/music%20large.jpg", 
-  "https://www.jjay.cuny.edu/sites/default/files/page_icons/artmusicmainimage.jpg", 
-  "https://s3.pixers.pics/pixers/700/FO/51/86/18/85/700_FO51861885_c822c77d43b6ef543c7b51c89f43737c.jpg",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Harpsichord_VitalJulianFrey.jpg/1200px-Harpsichord_VitalJulianFrey.jpg"];
-  var Popular =[];
-  var PopularCopy =[];
-  var PopularSort =[];
-  var temp;
-  var check=[];
-  var stations = $('#stationData').data('stations');
+  $('#urStationLink').attr('href', `/station/${userid}`);
 
-  for (var i=0; i < stations.length; i++){
-    temp = stations[i].connected_peers;
-    PopularCopy [i] = temp.length;
-    Popular [i] = temp.length;
-  }
-  var max, TempIndex;
-  for (var j=0; j < Popular.length; j++){
-    max= Math.max(...PopularCopy);
-    PopularSort[j]=max;
-    TempIndex = PopularCopy.indexOf(max);
-    PopularCopy.splice(TempIndex,1);
-    check [j] = -1;
-  }
-  
-
-  var index, check;
-  for (var m =0; m < PopularSort.length; m++){
-    if ( check[Popular.indexOf(PopularSort[m])] === -1){
-      check [Popular.indexOf(PopularSort[m])] = 1;
-    } 
+  function updateStations(stations){
+    stations.forEach((s)=>{
+      console.log(s);
+      $('ul#stations').append(`<li><a href="/station/${s.ownerid}">${s.name}(${s.connectedPeers.length+1})</a></li>`)
+    })
   }
 
-  for (var m =0; m < PopularSort.length; m++){
-    if ( check[Popular.indexOf(PopularSort[m])] === -1){
-      check [Popular.indexOf(PopularSort[m])] = 1;
-    }  
-    if (check[m] != -1 ){
-      index = Popular.indexOf(PopularSort[m]);
-    }else 
-      index = Popular.indexOf(PopularSort[m],m);
-    var div = document.createElement("div");
-    div.style= "display: inline-block; padding-left: 35px;"
-    var image= document.createElement("img");
-    image.src = Images[Math.floor(Math.random()*Images.length)];
-    image.id = "image";
-    image.width = "200";
-    image.height = "228";
-    image.border = "1";
-    div.appendChild(image);
-    var link = document.createElement("a");
-    link.href = "http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#"+ stations[index].station_name;
-    link.style= "align: center; font-weight: bold;";
-    link.innerHTML += "<figcaption style='text-align: center; font-weight: bold; font-size: 20px;'>"+stations[index].station_name+" </figcaption>";
-    div.appendChild(link);
-    var p = document.createElement("p");
-    p.innerHTML += "The station beats per minute (bpm) is:"+ stations[index].beats_per_minute;
-    p.style= " font-size: 12px;  text-align: center;";
-    div.appendChild(p);  
-    var NodesNo = document.createElement("p");
-    NodesNo.innerHTML += " The number of nodes join this station is:"+ PopularSort[m];
-    NodesNo.style= " font-size: 12px;  text-align: center;";
-    div.appendChild(NodesNo);
-    document.getElementById("Outter").appendChild(div);
-  if ( (m+1)%3 === 0){
-    var d = document.createElement("div");
-    d.style= " padding-bottom: 20px;"
-    document.getElementById("Outter").appendChild(d);
-  }
-  }
+  updateStations(stationData);
 </script>
 
 </body>
