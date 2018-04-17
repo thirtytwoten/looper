@@ -42,18 +42,7 @@
     new Sample('bass', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/bass.mp3'),
     new Sample('kick', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/kick.mp3'),
     new Sample('snare', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/snare.mp3'),
-    new Sample('F#', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3'),
-    new PianoNote('C3'),
-    new PianoNote('Db3'),
-    new PianoNote('Eb3'),
-    new PianoNote('E3'),
-    new PianoNote('F3'),
-    new PianoNote('Gb3'),
-    new PianoNote('Ab3'),
-    new PianoNote('A3'),
-    new PianoNote('Bb3'),
-    new PianoNote('B3'),
-    new PianoNote('C4')
+    new Sample('F#', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3')
   ];
   let matrix = new SoundMatrix(
       'seq',
@@ -76,6 +65,58 @@
   // function updateSeq(data){
   //   sequencer.matrix.set.cell(data.column, data.row, data.state);
   // }
+</script>
+
+<div id="synth">
+  <ul id="keys">
+    <li id="0" class="white a" > </li>
+    <li id="1" class="black a" ></li>
+    <li id="2" class="white a"></li>
+    <li id="3" class="black a"></li>
+    <li id="4" class="white a"></li>
+    <li id="5" class="black a"></li>
+    <li id="6" class="white a"></li>
+    <li id="7" class="white"></li>
+    <li id="8" class="black a"></li>
+    <li id="9" class="white a"></li>
+    <li id="10" class="black a"></li>
+    <li id="11" class="white a"></li>
+    <li id="12" class="white"></li>
+    <li id="13" class="black a"></li>
+    <li id="14" class="white a"></li>
+    <li id="15" class="black a"></li>
+    <li id="16" class="white a"></li>
+    <li id="17" class="black a"></li>
+    <li id="18" class="white a"></li>
+    <li id="19" class="white"></li>
+    <li id="20" class="black a"></li>
+    <li id="21" class="white a"></li>
+    <li id="22" class="black a"></li>
+    <li id="23" class="white a"></li>
+    <li id="24" class="white"></li>
+    <li id="25" class="black a"></li>
+    <li id="26" class="white a"></li>
+    <li id="27" class="black a"></li>
+    <li id="28" class="white a"></li>
+    <li id="29" class="black a"></li>
+    <li id="30" class="white a"></li>
+    <li id="31" class="white"> </li>
+  </ul>
+</div>
+
+<script>
+  function pianoFrequency(id){
+  var notes = ["F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2", "C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
+  // console.log(`${id}, ${notes[id]}`);
+  return notes[id];
+  };
+  $(document).ready(function(){
+    $("#keys li").click(function(){
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttackRelease(pianoFrequency(this.id), "8n");
+      });
+  });
 </script>
 
 <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
