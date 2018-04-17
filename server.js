@@ -25,14 +25,14 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
-  req.session.userid = generateId();
-  console.log(req.session.userid);
+  req.session.userid = req.session.userid || generateId();
   res.render('central', {layout: false, userid: req.session.userid, stations: JSON.stringify(stationManager.stationData())});
 });
 app.get('/station/:stationid', function (req, res) {
   let ownerid = req.params.stationid;
   let station = stationManager.getStation(ownerid);
   if (req.session.userid === ownerid || station) {
+    req.session.userid = req.session.userid || generateId();
     station = station || stationManager.createStation(ownerid);
     res.render('station', {layout: false, userid: req.session.userid, station: JSON.stringify(station.export())});
   } else {
