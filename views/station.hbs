@@ -9,6 +9,9 @@
 <script src="https://rawgit.com/nexus-js/ui/master/dist/NexusUI.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.66/Tone.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../serverLink.js"></script>
 <script type="text/javascript" src="../peer.js"></script>
 <script type="text/javascript" src="../user.js"></script>
@@ -69,12 +72,33 @@
   </div>
 </div>
 
+
 <div id="station-info" style="float:right; width: 20%;">
-  <h1>Station Info</h1>
-  <h2 id='node-id'>Node ID: </h1>
-  <h2 id='station-id'>Station ID: </h2>
-  <h2>Connected Peers...</h2>
-  <ul id='peers'><ul>
+  <div class="container">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#menu1">Station Info</a></li>
+    <li><a data-toggle="tab" href="#menu2">Chat</a></li>
+    <li><a data-toggle="tab" href="#menu3">Log</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+      <h3>Station Info</h3>
+      <p id='node-id'>User ID: </p>
+      <p id='station-id'>Station ID: </p>
+      <p >Connected Peers...</p>
+      <ul id='peers'><ul>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <h3>Chat</h3>
+      <p>Todo...</p>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h3>Debug Log</h3>
+      <p>Todo...</p>
+    </div>
+  </div>
+</div>
 </div>
 
 <div style="clear:both"></div>
