@@ -61,7 +61,7 @@ class SoundMatrix {
 
   createSequencer(selector) {
     this.sequencer = new Nexus.Sequencer( selector, {
-     'size': [1000,250],
+     'size': [800,200],
      'mode': 'toggle',
      'rows': this.sounds.length,
      'columns': this.beatLength
