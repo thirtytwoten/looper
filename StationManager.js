@@ -56,7 +56,12 @@ function removeStation(ownerid) {
 }
 
 function joinStation(ownerid, userid) {
-  getStation(ownerid).join(userid);
+  let station = getStation(ownerid)
+  if(station){
+    station.join(userid);
+  } else {
+    console.log(`cannot find station-#{ownerid}`);
+  }
 }
 
 function leaveStation(ownerid, userid) {

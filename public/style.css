@@ -15,9 +15,16 @@ h2 {
   font-family: 'Press Start 2P', cursive;
   text-align: center;
 }
+
 #seq {
   padding: 20px;
 }
+#station-info {
+  background-color: #FFF;
+  color: #000;
+}
+
+
 #header{
  height: 200px;
  width: 100%;
