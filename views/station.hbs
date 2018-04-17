@@ -36,6 +36,30 @@
   </div>
 </div>
 
+<script type="text/javascript">
+  let userid = $('#userid').data('userid');
+  let stationid = $('#stationid').data('stationid');
+  let user = new User(userid);
+  $('#node-id').text(`You are: ${user.node.id}`);
+  $('#station-id').text(`Station Id: ${stationid}`);
+  if(userid === stationid){
+    // user is owner of station
+  } else {
+    user.connect(stationid);
+  }
+
+  function sendMail() {
+  var email = document.getElementById("email").value;
+  var body = "I would like you to join his/her station!\n\n Click the link below to access the station! \n\n\n http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#"+stationId +"\n";
+  //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
+  var link = "mailto:"+ email
+               + "?cc="
+               + "&subject=" + escape("BIGE Invitation!")
+               + "&body=" + escape(body);
+  window.location.href = link;
+  }
+</script>
+
 <script>
   let context = new (window.AudioContext || window.webkitAudioContext)();
   let sounds = [
@@ -50,21 +74,28 @@
       context,
       16
     );
-  // sequencer.on('change',function(data) {
-  //   seqChange(data);
-  // })
+  matrix.sequencer.on('change',function(data) {
+    seqChange(data);
+  });
+
   function start() {
     matrix.start();
   }
+
   function stop() {
     matrix.stop();
   }
-  // function seqChange(data) {
-  //   //console.log('seqChange: ' + JSON.stringify(data));
-  // }
-  // function updateSeq(data){
-  //   sequencer.matrix.set.cell(data.column, data.row, data.state);
-  // }
+
+  function seqChange(data) {
+    console.log('seqChange: ' + JSON.stringify(data));
+    user.connections.forEach( (nid) => {
+      user.transmitSeqChange(nid, data);
+    });
+  }
+
+  function updateSeq(data){
+    matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
+  }
 </script>
 
 <div id="synth">
@@ -124,30 +155,6 @@
 <input id="email" type="text" maxlength="64" value="" />
 <input type="submit" value="Invite" />
 </form>
-
-<script type="text/javascript">
-  let userid = $('#userid').data('userid');
-  let stationid = $('#stationid').data('stationid');
-  let user = new User(userid);
-  $('#node-id').text(`You are: ${user.node.id}`);
-  $('#station-id').text(`Station Id: ${stationid}`);
-  if(userid === stationid){
-    // user is owner of station
-  } else {
-    user.connect(stationid);
-  }
-
-  function sendMail() {
-  var email = document.getElementById("email").value;
-  var body = "I would like you to join his/her station!\n\n Click the link below to access the station! \n\n\n http://ec2-18-188-197-92.us-east-2.compute.amazonaws.com:9000/station#"+stationId +"\n";
-  //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
-  var link = "mailto:"+ email
-               + "?cc="
-               + "&subject=" + escape("BIGE Invitation!")
-               + "&body=" + escape(body);
-  window.location.href = link;
-  }
-</script>
 
 <br/> <br/> <br/> 
 </body>
