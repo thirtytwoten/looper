@@ -124,20 +124,15 @@
     document.getElementById("form").onsubmit = function(e) {
     e.preventDefault();
     var msg = $('#text').val();
-    console.log(msg);
      $('ul#peermsg').append(`<li>${user.node.id}: ${msg}</li>`);
     user.connections.forEach( (nodeid) => { 
       user.transmitMsg(nodeid,msg); 
     });
-    console.log("here");
     $('#text').val('');
     $('#text').focus();
-    //return false;
   };
   
   function displayMsg(peerId, msg){
-    console.log("ggg");
-    console.log(peerId);
     $("ul#peermsg").append(`<li>${peerId} :${msg}</li>`)
   }
 
