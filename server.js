@@ -1,4 +1,4 @@
-// server.js: server built with node.js 
+// server.js: node.js server using express, handlebars
 //   see https://nodejs.org/en/docs/guides/getting-started-guide/
 // start server by running 'node server [port#]' from root directory
 // this is the heart of backend code
@@ -33,10 +33,12 @@ let session = require('express-session');
 app.use(session({secret:'secret-sauce', resave: false,
   saveUninitialized: true}));
 
+
+
 /*** ROUTING ***/
+// handles http requests using express
 // see http://expressjs.com/en/guide/routing.html
 // e.g. app.get([path], [function that handles a request (req) and returns a response (res)])
-
 
 // homepage, when user visits base url (e.g. localhost:9000)
 app.get('/', function (req, res) {
@@ -70,22 +72,28 @@ app.get('/station/:stationid', function (req, res) {
   }
 });
 
+
+
+/*** tell server to start listening to incoming requests on a given port ***/
 // set port to 9000 as default or first command line argument
-// (running `node server 3000` would run the app on port 3000)
+// (e.g. running `node server 3000` would run the app on port 3000)
 let port = process.argv[2] || 9000;
 let server = app.listen(port);
 console.log(`app listening on port ${port}`);
 
+
+/*** EXPRESS PEER SERVER ***/
 // set up express peer server which handles connections
-// used by peer.js in the front end
+//   used by peer.js in the front end
 let ExpressPeerServer = require('peer').ExpressPeerServer;
 app.use('/ps', ExpressPeerServer(server, {debug: true}));
 
 
-// set up socket io, creates a direct connection to the client and server
-// without this the server only updates on page load
-// but with socket io we can write front end code that interacts with the server
-//   and can make changes on the spot without page load
+/*** SOCKET IO ***/
+// Set up socket io - creates a direct connection to the client and server.
+// Without this the server only sends information when the page is first loaded,
+// but with socket io we can write front end code that interacts with the server on the fly
+//   and can get updates without refreshing the page
 let io = require('socket.io')(server);
 io.on('connection', function(client) {
   console.log('client connected');
@@ -109,6 +117,7 @@ io.on('connection', function(client) {
 });
 
 
+/*** HELPERS ***/
 // generates random id for the userid
 function generateId() {
   var str = "";
