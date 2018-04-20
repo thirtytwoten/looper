@@ -73,7 +73,7 @@
 </div>
 
 
-<div id="station-info" style="float:right; width: 20%;">
+<div id="station-info" style="padding-right: 20px; float:left; height: 60%; width: 20%;">
   <div class="container">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#menu1">Station Info</a></li>
@@ -91,7 +91,10 @@
     </div>
     <div id="menu2" class="tab-pane fade">
       <h3>Chat</h3>
-      <p>Todo...</p>
+        <ul id="peermsg"></ul>
+        <form id= "form">
+          <input type="text" id="text" placeholder="Enter message"><input type="submit" value="Send">
+        </form>
     </div>
     <div id="menu3" class="tab-pane fade">
       <h3>Debug Log</h3>
@@ -117,12 +120,34 @@
     $('ul#peers').append(`<li>${p}</li>`)
   });
 
+
+    document.getElementById("form").onsubmit = function(e) {
+    e.preventDefault();
+    var msg = $('#text').val();
+    console.log(msg);
+     $('ul#peermsg').append(`<li>${user.node.id}: ${msg}</li>`);
+    user.connections.forEach( (nodeid) => { 
+      user.transmitMsg(nodeid,msg); 
+    });
+    console.log("here");
+    $('#text').val('');
+    $('#text').focus();
+    //return false;
+  };
+  
+  function displayMsg(peerId, msg){
+    console.log("ggg");
+    console.log(peerId);
+    $("ul#peermsg").append(`<li>${peerId} :${msg}</li>`)
+  }
+
   if(userid !== stationid){
     station.join(user);
     // serverLink.emit('joinStation', stationid, userid);
     // user.connect(stationid);
     // console.log('joinStation');
-  }
+  } 
+
 </script>
 
 <script>
@@ -162,10 +187,10 @@
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
-  function displayMsg(peerId, msg){
-    console.log(`${peerId}: ${msg}`);
+  //function displayMsg(peerId, msg){
+    //console.log(`${peerId}: ${msg}`);
     //$('ul#log').append(`<li>${peerId}: ${msg}</li>`);
-  }
+  //}
 </script>
 
 <script>
@@ -182,6 +207,8 @@
       });
   });
 </script>
+
+<!-- Chat Script -->
 
 <br/> <br/> <br/> 
 </body>
