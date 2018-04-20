@@ -90,10 +90,17 @@ app.use('/ps', ExpressPeerServer(server, {debug: true}));
 
 
 /*** SOCKET IO ***/
+<<<<<<< HEAD
 // Set up socket io - creates a direct connection to the client and server.
 // Without this the server only sends information when the page is first loaded,
 // but with socket io we can write front end code that interacts with the server on the fly
 //   and can get updates without refreshing the page
+=======
+// set up socket io, creates a direct connection to the client and server
+// without this the server only updates on page load
+// but with socket io we can write front end code that interacts with the server
+//   and can make changes on the spot without page load
+>>>>>>> bbeaf1760987984741a34365b21db9f1dcbc59dd
 let io = require('socket.io')(server);
 io.on('connection', function(client) {
   console.log('client connected');
