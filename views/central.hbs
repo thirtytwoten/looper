@@ -8,31 +8,103 @@
 <script type="text/javascript" src="../serverLink.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
+<style>
+#back {
+  min-width:900px;
+  min-height:500px;
+  padding:220px;
+  background-image: url("http://www.zgjm-org.com/data/out/10/IMG_410656.jpg");
+}
+#front {
+  padding:10px;
+  background-color: white;
+} 
+#image {
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  background-color: white;
+}
+a {
+  padding-bottom: 20px;
+  padding-left: 40px;
+}
+</style>
 </head>
 <body>
-
 <div id='stationData' data-stations={{stations}}></div>
 <div id='userid' data-userid={{userid}}></div>
-<h1>CENTRAL</h1>
-<a id='urStationLink' href='#'>Go to your station</a>
 
-<h2>STATIONS<h3>
-<ul id='stations'></ul>
+<h1>Looper</h1>
+<h1>Welcome to our website, we hope you enjoy ...!</h1>
+<div align="center">
+<img src="https://i.pinimg.com/originals/b1/6a/df/b16adfb995a675fb1d744a908e7aaa58.jpg
+" height="400" width="400" >
+<a id='urStationLink' href='#'><h2>Go to your station</h2></a>
+</div>
+
+<h2>Here is the list of the active stations you can join:<h2>
+<div id ="Outter">
+
+
+</div>
+
 
 <script>
+  var Images = ["https://openclipart.org/image/800px/svg_to_png/257267/Polished-Onyx-Musical-Notes-Typography-No-Background.png",
+  "https://openclipart.org/image/2400px/svg_to_png/293804/sax-gedreht.png", 
+  "https://img00.deviantart.net/7b74/i/2011/301/1/a/music_png_background_by_realmofheaven-d4e8zzv.png",
+  "http://www.cumbernauldy.org.uk/Tech%20Music%20Media%20Index/music%20large.jpg", 
+  "https://www.jjay.cuny.edu/sites/default/files/page_icons/artmusicmainimage.jpg", 
+  "https://s3.pixers.pics/pixers/700/FO/51/86/18/85/700_FO51861885_c822c77d43b6ef543c7b51c89f43737c.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Harpsichord_VitalJulianFrey.jpg/1200px-Harpsichord_VitalJulianFrey.jpg"];
+
+ 
   let userid = $('#userid').data('userid');
   let stationData = $('#stationData').data('stations');
-
-  $('#urStationLink').attr('href', `/station/${userid}`);
-
+  $('#urStationLink').attr('href', `/station/${userid}`); 
+  
   function updateStations(stations){
-    stations.forEach((s)=>{
-      console.log(s);
-      $('ul#stations').append(`<li><a href="/station/${s.ownerid}">${s.name}(${s.connectedPeers.length+1})</a></li>`)
+    //console.log(stations);
+    var i = 0;
+    PeerNo =[]; 
+    let index = -1;
+    let length;
+    stations.forEach((s)=>{  
+      PeerNo.unshift(s.connectedPeers.length);
     });
-  }
+    length = PeerNo.length;
+    console.log(PeerNo);
+    
+    for ( var i =0; i < length; i++){
+      index = PeerNo.indexOf(Math.max(...PeerNo)); 
+      var div = document.createElement("div");
+      div.style= "display: inline-block; padding-left: 35px;"
+      var ImgDiv = document.createElement("div");
+      var image= document.createElement("img");
+      image.src = Images[Math.floor(Math.random()*Images.length)];
+      image.id = "image";
+      image.width = "200";
+      image.height = "228";
+      image.border = "1";
+      ImgDiv.appendChild(image);
+      var LinkDiv = document.createElement("div");
+      LinkDiv.id = "station"+i;
+      div.appendChild(ImgDiv);
+      div.appendChild(LinkDiv);
+      document.getElementById("Outter").appendChild(div);
 
+      let Div = "Div#station"+ i;
+      $(Div).append(`<a href="/station/${stations[index].ownerid}">${stations[index].name}</a>`);
+      $(Div).append(`<figcaption style='text-align: center; font-size: 12px;'><font color ="purple" >Number of connected peers: ${PeerNo[index]}</font></figcaption>`);
+      PeerNo[index] = -1;
+      console.log(PeerNo);
+      console.log(index);
+    }
+  }
   updateStations(stationData);
+
 </script>
 
 </body>
