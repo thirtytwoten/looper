@@ -28,7 +28,7 @@ app.set('view engine', 'hbs');
 
 // set up express-session,
 // so that we can keep track of each visitor to the site
-// by saving a userid as a session variable
+// by saving a userid as a session variable (req.session.userid)
 let session = require('express-session');
 app.use(session({secret:'secret-sauce', resave: false,
   saveUninitialized: true}));
@@ -36,26 +36,37 @@ app.use(session({secret:'secret-sauce', resave: false,
 /*** ROUTING ***/
 // see http://expressjs.com/en/guide/routing.html
 // e.g. app.get([path], [function that handles a request (req) and returns a response (res)])
-// render 'central' view when user visits base url (e.g. localhost:9000)
+
+
+// homepage, when user visits base url (e.g. localhost:9000)
 app.get('/', function (req, res) {
+  // sets userid session variable if one doesn't exist
   req.session.userid = req.session.userid || generateId();
+  // render the central view (views/central.hbs) passing in the userid and the data for all of the stations
   res.render('central', {layout: false, userid: req.session.userid, stations: JSON.stringify(stationManager.stationData())});
 });
-// render station page identified by the station id (the userid of the owner)
+
+// render station page identified by the :stationid (the userid of the owner)
 // so if you went to the page localhost:9000/station/user123 
-//    it would load user123 station if it exists
+//    it would load station owned by user123 if it exists
 app.get('/station/:stationid', function (req, res) {
+  // assign userid if one does not exist
+  req.session.userid = req.session.userid || generateId();
+  // set the owner id from the :stationid param
   let ownerid = req.params.stationid;
+  // find the station if it exists
   let station = stationManager.getStation(ownerid);
-  // check if visiting user is the station owner and check if station exists 
-  if (req.session.userid === ownerid || station) {
-    req.session.userid = req.session.userid || generateId(); // assign userid if one does not exist
-    station = station || stationManager.createStation(ownerid); // make station if station does not exist (current user is owner)
-    res.render('station', {layout: false, userid: req.session.userid, station: JSON.stringify(station.export())}); // render station view
+  if (!station && req.session.userid === ownerid) {
+    // if station does not exist but is supposed to be current user's station, create the station
+    station = stationManager.createStation(ownerid);
+  }
+  if (station) {
+    // render the station view (views/station.hbs), passing in the station and user info
+    res.render('station', {layout: false, userid: req.session.userid, station: JSON.stringify(station.export())});
   } else {
-    // if no station exists and the visiting user is not the owner (render an error)
-    // TODO: redirect back
+    // station does not exist, bad url, respond with error code
     res.end(`station '${ownerid}' does not exist`);
+    // TODO: redirect to homepage
   }
 });
 
