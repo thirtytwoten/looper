@@ -1,4 +1,16 @@
-// require Nexus, Tone
+// SoundMatrix.js - js code for the sequencer
+// includes classes for SoundMatrix (the sequencer),
+//   a generic Sound class which could either be a Sample or a PianoNote
+//   each row of the sequencer has a Sound associated with it
+//   saved in array format in SoundMatrix.sounds
+//
+// loaded on station.hbs   <script type="text/javascript" src="../SoundMatrix.js"></script>
+//
+// dependent on Nexus and Tone
+//    this.player = new Tone.Player({...})
+//    this.sequencer = new Nexus.Sequencer( selector, {...} );
+//  meaning, station.hbs must include the Tone and Nexus javascript files before this file
+//  for the references to Tone and Nexus to work
 
 class Sound {
   constructor(type, name) {

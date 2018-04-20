@@ -1,3 +1,7 @@
+{{!-- station.hbs, the view for the station --}}
+{{!-- a lot going on here... synth, sequencer, station info, etc --}}
+{{!-- served by this routing method in server.js: app.get('/station/:stationid', function (req, res) {...}); --}}
+
 <!DOCTYPE HTML> 
 <html lang="en"> 
 <head>
@@ -19,8 +23,12 @@
 <script type="text/javascript" src="../station.js"></script>
 </head>
 <body>
-  <div id='userid' data-userid={{userid}}></div>
-  <div id='station' data-station={{station}}></div>
+  {{!-- this is a way to passing JSON data from the server to use in the front-end javascript --}}
+    {{!-- render data in html page (in html source, not visable to user) --}}
+    <div id='userid' data-userid={{userid}}></div>
+    <div id='station' data-station={{station}}></div>
+    {{!-- javascript pulls this data out and saves it as javascript variables for easy referencing --}}
+    {{!-- eg. let userid = $('#userid').data('userid'); let stationData = $('#station').data('station'); --}}
   <div id="header">
     <div id="looper-heading">
       <h1 id='looper' class = "neon" data-text="[Looper]">Looper</h1>
@@ -107,13 +115,17 @@
 <div style="clear:both"></div>
 
 <script type="text/javascript">
+  // load data embedded in html as js vars
   let userid = $('#userid').data('userid');
   let stationData = $('#station').data('station');
+
+  // create station from class defined in station.js
   let station = new Station(stationData, null);
   let stationid = station.ownerid;
+  // create user from class defined in user.js
   let user = new User(userid);
 
-  // set station info
+  // show station info in view
   $('#node-id').text(`You are: ${user.node.id}`);
   $('#station-id').text(`Station owner: ${station.ownerid}`);
   station.connectedPeers.forEach((p)=>{
@@ -138,21 +150,19 @@
 
   if(userid !== stationid){
     station.join(user);
-    // serverLink.emit('joinStation', stationid, userid);
-    // user.connect(stationid);
-    // console.log('joinStation');
-  } 
-
+  }
 </script>
 
 <script>
   let context = new (window.AudioContext || window.webkitAudioContext)();
+  // initialize sounds for sequencer from class defined in SoundMatrix.js
   let sounds = [
     new Sample('bass', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/bass.mp3'),
     new Sample('kick', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/kick.mp3'),
     new Sample('snare', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/loop/snare.mp3'),
     new Sample('F#', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3')
   ];
+  // initialize sequencer matrix from class defined in SoundMatrix.js
   let matrix = new SoundMatrix(
       'seq',
       sounds,
@@ -173,12 +183,14 @@
 
   function seqChange(data) {
     console.log('seqChange: ' + JSON.stringify(data));
+    // transmit sequencer change to all user connections, TODO: go through connections in user class
     user.connections.forEach( (nid) => {
       user.transmitSeqChange(nid, data);
     });
   }
 
   function updateSeq(data){
+    // update cell on sequencer (TODO: move to SoundMatrix class)
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
@@ -189,6 +201,7 @@
 </script>
 
 <script>
+  // synth functionality...
   function pianoFrequency(id){
   var notes = ["F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2", "C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
   // console.log(`${id}, ${notes[id]}`);
