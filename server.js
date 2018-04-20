@@ -1,7 +1,17 @@
+// server.js: server built with node.js 
+//   see https://nodejs.org/en/docs/guides/getting-started-guide/
+// start server by running 'node server [port#]' from root directory
+// this is the heart of backend code
+// sets up the server, listens for requests, responds with html  
+
+// import custom library StationManager.js
 let stationManager = require('./StationManager');
 
-
 // set up express web server using handlebars view engine
+// handlebar allows us to make views with {{javascript}} embedded in the html
+//   on each page request the server generates the html file by
+//   stitching together the handlebar views/layouts/partials and executing the embedded javascript.
+//   The server responds with a html file that the client's browser renders to their screen
 let path = require('path');
 let express = require('express');
 let ehbs = require('express-handlebars');
@@ -23,14 +33,16 @@ let session = require('express-session');
 app.use(session({secret:'secret-sauce', resave: false,
   saveUninitialized: true}));
 
-/* ROUTING */
-// render 'central' view when user visits base url
+/*** ROUTING ***/
+// see http://expressjs.com/en/guide/routing.html
+// e.g. app.get([path], [function that handles a request (req) and returns a response (res)])
+// render 'central' view when user visits base url (e.g. localhost:9000)
 app.get('/', function (req, res) {
   req.session.userid = req.session.userid || generateId();
   res.render('central', {layout: false, userid: req.session.userid, stations: JSON.stringify(stationManager.stationData())});
 });
 // render station page identified by the station id (the userid of the owner)
-// so if you went to the page looper.com/station/user123 
+// so if you went to the page localhost:9000/station/user123 
 //    it would load user123 station if it exists
 app.get('/station/:stationid', function (req, res) {
   let ownerid = req.params.stationid;
