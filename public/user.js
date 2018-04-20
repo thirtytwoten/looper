@@ -1,4 +1,10 @@
-// dependent on peer.js
+// user.js - creates a peer.js node for each user on the site
+// loaded on station.hbs   <script type="text/javascript" src="../user.js"></script>
+// dependent on peer.js, e.g.
+//   this.node = new Peer(userid, peerServerInfo);
+//                   ^ Peer defined in peer.js
+//   which means in station.hbs this file must be included after the peer.js file for it to work
+
 
 let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 

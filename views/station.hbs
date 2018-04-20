@@ -1,3 +1,7 @@
+{{!-- station.hbs, the view for the station --}}
+{{!-- a lot going on here... synth, sequencer, station info, etc --}}
+{{!-- served by this routing method in server.js: app.get('/station/:stationid', function (req, res) {...}); --}}
+
 <!DOCTYPE HTML> 
 <html lang="en"> 
 <head>
@@ -19,8 +23,12 @@
 <script type="text/javascript" src="../station.js"></script>
 </head>
 <body>
-  <div id='userid' data-userid={{userid}}></div>
-  <div id='station' data-station={{station}}></div>
+  {{!-- this is a way to passing JSON data from the server to use in the front-end javascript --}}
+    {{!-- render data in html page (in html source, not visable to user) --}}
+    <div id='userid' data-userid={{userid}}></div>
+    <div id='station' data-station={{station}}></div>
+    {{!-- javascript pulls this data out and saves it as javascript variables for easy referencing --}}
+    {{!-- eg. let userid = $('#userid').data('userid'); let stationData = $('#station').data('station'); --}}
   <div id="header">
     <div id="looper-heading">
       <h1 id='looper' class = "neon" data-text="[Looper]">Looper</h1>
