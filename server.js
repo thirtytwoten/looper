@@ -4,7 +4,7 @@
 // this is the heart of backend code
 // sets up the server, listens for requests, responds with html  
 
-// import custom library StationManager.js
+// import custom module StationManager.js
 let stationManager = require('./StationManager');
 
 // set up express web server using handlebars view engine
