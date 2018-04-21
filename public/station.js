@@ -21,7 +21,9 @@ class Station {
 
   join(user) {
     user.connect(this.ownerid);
-    this.connectedPeers.push(user.getId());
+    if(!this.connectedPeers.find((p) => p === user.getId())){
+      this.connectedPeers.push(user.getId());
+    }
     serverLink.emit('joinStation', this.ownerid, user.getId());
   }
 

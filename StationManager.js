@@ -22,7 +22,9 @@ class Station {
   }
 
   join(nodeId) {
-    this.connectedPeers.push(nodeId);
+    if(this.connectedPeers.indexOf(nodeId) < 0){
+      this.connectedPeers.push(nodeId);
+    }
   }
 
   leave(nodeId) {
@@ -64,7 +66,7 @@ function removeStation(ownerid) {
 }
 
 function joinStation(ownerid, userid) {
-  let station = getStation(ownerid)
+  let station = getStation(ownerid);
   if(station){
     station.join(userid);
   } else {

@@ -29,15 +29,17 @@ class User {
         this.connect(c.peer);
       }
       c.on('data', (data) => {
+        // data.receivedAt = Date.now();
+        // data.latency = data.receivedAt - data.sentAt;
         let d = JSON.parse(data);
         if(d.type === 'msg'){
           console.log('data: ' + data);
           displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
-          updateSeq(d.data); // function in station.hbs
-          displayMsg(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`); // function in station.hbs
+          updateSeq(d.data);
         } 
       });
+      
       c.on('close', () => {
         displayMsg(c.peer, ' has left');
         let i = this.connections.indexOf(c.peer);
@@ -69,6 +71,7 @@ class User {
   }
 
   transmit(nodeId, data) {
+    // data.sentAt = Date.now();
     let str = JSON.stringify(data);
     let conns = this.node.connections[nodeId];
     for (let i = 0; i < conns.length; i++){
