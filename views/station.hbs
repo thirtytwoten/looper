@@ -26,7 +26,7 @@
 <script type="text/javascript" src="../SoundMatrix.js"></script>
 <script type="text/javascript" src="../station.js"></script>
 </head>
-<body>
+<body style = "background-color: #601609;">
   {{!-- this is a way to passing JSON data from the server to use in the front-end javascript --}}
     {{!-- render data in html page (in html source, not visable to user) --}}
     <div id='userid' data-userid={{userid}}></div>
@@ -35,12 +35,26 @@
     {{!-- eg. let userid = $('#userid').data('userid'); let stationData = $('#station').data('station'); --}}
 
     <div class="container">
-    <h1 class="display-2">Loope<span class="vim-caret">r</span></h1>
+    <h1 class="display-1 text-danger text-center display-xxl text-uppercase">Looper</h1>
+    <nav class="navbar navbar-expand-lg ht-tm-element navbar-dark bg-secondary">
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+          <li class="nav-item active">
+            <a class="nav-link display-3" href="#!">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+     <div class="list-group ht-tm-element" style = "background-color: #e8a610;">
+          <a id = "node-id" class="display-4 list-group-item" style = "background-color: #e8a610;"></a>
+          <a id = "station-id" class="display-4 list-group-item" style = "background-color: #e8a610;"></a>
+        </div>
+
     <div class ="row">
-    <div class="col-lg">
+    <div class="col-lg-9">
       <div id ="seq"></div>
       <div class = "row">
-        <div class="col-lg-10" style="background-color: #323156; height: 280px; margin: 2px;margin-left: 11px;">
+        <div class="col-lg" style="background-color: #ffbc21; height: 280px; margin: 2px;margin-left: 40px;">
         <div id="synth">
           <ul id="keys">
             <li id="0" class="white a" > </li>
@@ -80,40 +94,46 @@
         </div>
         <!--div class="col-lg-5" style="background-color: grey; height: 100px; margin: 2px;"></div-->
       </div>
+    </div>
+    <div class = "col-lg-1"></div>
+    <div class = "col-lg-2" style = "padding-left: 0px; background-color:#e8a610; z-index: -1;">
+        <h3>Chat</h3>
+      <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner">
+        <ul class="list-group ht-tm-element" id="peermsg">
+        </ul>
+            <form id = "form">
+              <div class="form-group">
+                <label for="Enter message">Email address</label>
+                  <input type="text" id="text" placeholder="Enter message">
+              </div>
+              <button type="submit" class="btn btn-secondary" value="Send">Submit</button>
+            </form>
+          </div>
+    </div>
+  </div>
       <div class="row">
-        <button type="button" class="btn btn-primary btn-lg btn-shadow text-mono px-3 my-2 ml-0 text-left" onclick=start() style="width: 520px; margin-left: 15px;">Start</button>
-        <button type="button" class="btn btn-primary btn-lg btn-shadow text-mono px-3 my-2 ml-0 text-left" onclick=stop() style="width: 530px;margin-left: 5px;">Stop</button>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-4">
+        <button type="button" class="ht-tm-element btn btn-block btn-secondary" onclick=start()>Start</button>
+      </div>
+      <div class = "col-lg-4">
+        <button type="button" class="ht-tm-element btn btn-block btn-secondary" onclick=stop()>Stop</button>
+      </div>
+      <div class= "col-lg-2"></div>
       </div>
       <div class = "row">
-        <div id="station-info" style="padding-right: 10px; float:left; height: 60%; width: 100%;">
-          <ul class="nav nav-tabs" style = "background-color: grey;">
-            <li class="active"><a data-toggle="tab" href="#menu1">Station Info</a></li>
-            <li><a data-toggle="tab" href="#menu2">Chat</a></li>
-            <li><a data-toggle="tab" href="#menu3">Log</a></li>
-          </ul>
-
-          <div class="tab-content" style = "background-color: grey;">
-            <div id="menu1" class="tab-pane fade in active">
-              <h3>Station Info</h3>
-              <p id='node-id'>User ID: </p>
-              <p id='station-id'>Station ID: </p>
-              <p >Connected Peers...</p>
-              <ul id='peers'><ul>
-            </div>
-            <div id="menu2" class="tab-pane fade">
-              <h3>Chat</h3>
-                <ul id="peermsg"></ul>
-                <form id= "form">
-                  <input type="text" id="text" placeholder="Enter message"><input type="submit" value="Send">
-                </form>
-            </div>
-            <div id="menu3" class="tab-pane fade">
-              <h3>Debug Log</h3>
-              <p>Todo...</p>
-            </div>
+        <div class = "col-lg-6" style = "background-color: grey">
+          <h3 = "display-3">Connected Peers: </h3>
+          <div style = "background-color: #e8a610;">
+            <ul id='peers' class="list-group ht-tm-element">
+        </ul>
+          <ul ><ul>
           </div>
+        <div class = "col-lg-6" style = "background-color: grey">
+          <h3>Debug Log</h3>
+          <p>Todo...</p>
         </div>
-      </div>
+        <!--div class = "col-lg-3"></div-->
     </div>
   </div>
   </div>
@@ -146,7 +166,7 @@
     peers.forEach((p)=>{
       // if (Tracker.indexOf(p) == -1){
       //   Tracker.unshift(p);
-        $('ul#peers').append(`<li>${p}</li>`);
+        $('ul#peers').append(`<li class="list-group-item">${p}</li>`);
       // }
     });
   }
@@ -155,9 +175,9 @@
   document.getElementById("form").onsubmit = function(e) {
     e.preventDefault();
     var msg = $('#text').val();
-    $('ul#peermsg').append(`<li>${user.node.id}: ${msg}</li>`);
-    user.connections.forEach( (nodeid) => { 
-      user.transmitMsg(nodeid,msg); 
+    $('ul#peermsg').append(`<li class="list-group-item">${user.node.id}: ${msg}</li>`);
+    user.connections.forEach( (nodeid) => {
+      user.transmitMsg(nodeid,msg);
     });
     $('#text').val('');
     $('#text').focus();
@@ -175,7 +195,7 @@
     // serverLink.emit('joinStation', stationid, userid);
     // user.connect(stationid);
     // console.log('joinStation');
-  } 
+  }
 
 </script>
 
@@ -251,7 +271,7 @@
   });
 </script>
 
-<br/> <br/> <br/> 
+<br/> <br/> <br/>
 <!-- Chat Script -->
 <br/> <br/> <br/>
 
