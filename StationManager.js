@@ -1,3 +1,9 @@
+// StationManager - custom node.js module keep track of stations and their configurations
+//
+// imported in server.js: (let stationManager = require('./StationManager');)
+// e.g. called in when stations are created (station = station || stationManager.createStation(ownerid);)
+// e.g. called when users join a station (stationManager.joinStation(stationownerid, userid);)
+
 let stations = [];
 let n = 0;
 
@@ -10,6 +16,7 @@ class Station {
     this.createdAt = Date.now();
   }
 
+  // time that the station has been active
   age(){
     return Date.now() - this.createdAt;
   }
@@ -25,6 +32,7 @@ class Station {
     }
   }
 
+  // condenses the data of the station into a JSON object
   export() {
     return {
       name: this.name,
@@ -68,6 +76,7 @@ function leaveStation(ownerid, userid) {
   getStation(ownerid).leave(userid);
 }
 
+// this was used for the network layout of the homepage, work in progress
 function networkData() {
   // let json = {nodes: [], links: []};
   // stations.forEach((s)=>{
@@ -84,6 +93,7 @@ function networkData() {
   // return JSON.stringify(json);
 }
 
+// export all of data of all of the stations as a json array
 function stationData() {
   let arr = [];
   stations.forEach((s)=>{
@@ -92,6 +102,10 @@ function stationData() {
   return arr;
 }
 
+// when modules are imported (like this one is imported in server.js)
+// the importer can only call what is explicitly defined below
+// for example server.js cannot call stationManager.n unless we added n to the list below
+//   but it can call stationManager.createStation because that method was exported in the module
 module.exports = {
   stations, getStation, createStation, joinStation, leaveStation, removeStation, networkData, stationData
 }

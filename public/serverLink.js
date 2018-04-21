@@ -1,3 +1,13 @@
+// serverLink.js - socket.io connection links from the front-end client to the server
+//
+// see https://socket.io/
+//
+// example used in join method of Station class...
+//   public/station.js:    serverLink.emit('joinStation', this.ownerid, user.getId());
+// and picked up by server
+//   server.js:            client.on('joinStation', function(stationownerid, userid){...});
+
+
 let serverLink = io.connect(`${window.location.hostname}:${window.location.port}`);
 
 serverLink.on('connect', function(){console.log(`socket connected`)});

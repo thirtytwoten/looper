@@ -1,4 +1,10 @@
-// dependent on peer.js
+// user.js - creates a peer.js node for each user on the site
+// loaded on station.hbs   <script type="text/javascript" src="../user.js"></script>
+// dependent on peer.js, e.g.
+//   this.node = new Peer(userid, peerServerInfo);
+//                   ^ Peer defined in peer.js
+//   which means in station.hbs this file must be included after the peer.js file for it to work
+
 
 let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 
@@ -26,7 +32,7 @@ class User {
         let d = JSON.parse(data);
         if(d.type === 'msg'){
           console.log('data: ' + data);
-          displayMsg(c.peer, d.data);
+          displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
           updateSeq(d.data);
           displayLog(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`);
