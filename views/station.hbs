@@ -160,7 +160,7 @@
   }
 
   // let IdTracker = []
-  if(userid !== stationid ){//&& Tracker.indexOf(userid) == -1){
+  if(userid !== stationid){//&& Tracker.indexOf(userid) == -1){
     station.join(user);
     // Tracker.unshift(userid);
     // console.log(IdTracker);
@@ -172,6 +172,8 @@
 </script>
 
 <script>
+  let remoteAuthor;
+
   let context = new (window.AudioContext || window.webkitAudioContext)();
   // initialize sounds for sequencer from class defined in SoundMatrix.js
   let sounds = [
@@ -181,16 +183,12 @@
     new Sample('F#', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3')
   ];
   // initialize sequencer matrix from class defined in SoundMatrix.js
-  let remoteAuthor;
   let matrix = new SoundMatrix(
-      'seq',
-      sounds,
-      context,
-      16
-    );
-  matrix.sequencer.on('change',function(data) {
-    seqChange(data);
-  });
+    'seq',
+    sounds,
+    context,
+    16
+  );
 
   function start() {
     matrix.start();
@@ -198,6 +196,16 @@
 
   function stop() {
     matrix.stop();
+  }
+
+  if(user.getId()===station.ownerid){
+    trackChanges();
+  }
+
+  function initSeq(data) {
+    console.log(`station.hbs, initSeq`);
+    matrix.initPattern(data);
+    trackChanges();
   }
 
   function seqChange(data) {
@@ -213,6 +221,12 @@
       });
     }
     remoteAuthor = null;
+  }
+
+  function trackChanges(){
+    matrix.sequencer.on('change',function(data) {
+      seqChange(data);
+    });
   }
 
   function updateSeq(data){

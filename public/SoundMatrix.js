@@ -94,6 +94,14 @@ class SoundMatrix {
     this.sequencer.next();
   }
 
+  getPattern() {
+    return this.sequencer.matrix.pattern;
+  }
+
+  initPattern(data) {
+    this.sequencer.matrix.set.all(data);
+  }
+
   start() {
     this.loop.start();
   }

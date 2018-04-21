@@ -36,8 +36,11 @@ class User {
           console.log('data: ' + data);
           displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
-          updateSeq(d.data);
-        } 
+          updateSeq(d.data); // function in station.hbs
+        } else if (d.type === 'seqInit'){
+          console.log('seqInit event');
+          initSeq(d.data); // function in station.hbs
+       }
       });
       
       c.on('close', () => {
@@ -46,8 +49,12 @@ class User {
         if (i > -1) {
           this.connections.splice(i, 1);
         }
-        
       });
+
+      // if user is station owner transmit initSeq state
+      if (station.ownerid === this.getId()) {
+        this.transmitInitData(c.peer, matrix.getPattern());
+      }
     });
   }
 
@@ -68,6 +75,10 @@ class User {
 
   transmitSeqChange(nodeId, data) {
     this.transmit(nodeId, {type: 'seqChange', data: data});
+  }
+
+  transmitInitData(nodeId, pattern) {
+    this.transmit(nodeId, {type: 'seqInit', data: pattern})
   }
 
   transmit(nodeId, data) {
