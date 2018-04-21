@@ -29,9 +29,10 @@ class User {
           displayMsg(c.peer, d.data);
         } else if (d.type === 'seqChange'){
           updateSeq(d.data);
-          displayMsg(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`);
+          displayLog(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`);
         } 
       });
+      
       c.on('close', () => {
         displayMsg(c.peer, ' has left');
         let i = this.connections.indexOf(c.peer);

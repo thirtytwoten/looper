@@ -98,7 +98,7 @@
     </div>
     <div id="menu3" class="tab-pane fade">
       <h3>Debug Log</h3>
-      <p>Todo...</p>
+        <ul id="log"></ul>
     </div>
   </div>
 </div>
@@ -114,17 +114,22 @@
   let user = new User(userid);
 
   // set station info
+  let Tracker = [];
   $('#node-id').text(`You are: ${user.node.id}`);
   $('#station-id').text(`Station owner: ${station.ownerid}`);
   station.connectedPeers.forEach((p)=>{
-    $('ul#peers').append(`<li>${p}</li>`)
+    if (Tracker.indexOf(p) == -1){
+      Tracker.unshift(p);
+      $('ul#peers').append(`<li>${p}</li>`);
+    }
+    //console.log(Tracker);
   });
 
 
-    document.getElementById("form").onsubmit = function(e) {
+  document.getElementById("form").onsubmit = function(e) {
     e.preventDefault();
     var msg = $('#text').val();
-     $('ul#peermsg').append(`<li>${user.node.id}: ${msg}</li>`);
+    $('ul#peermsg').append(`<li>${user.node.id}: ${msg}</li>`);
     user.connections.forEach( (nodeid) => { 
       user.transmitMsg(nodeid,msg); 
     });
@@ -136,8 +141,11 @@
     $("ul#peermsg").append(`<li>${peerId} :${msg}</li>`)
   }
 
-  if(userid !== stationid){
+  let IdTracker = []
+  if(userid !== stationid ){//&& Tracker.indexOf(userid) == -1){
     station.join(user);
+    Tracker.unshift(userid);
+    console.log(IdTracker);
     // serverLink.emit('joinStation', stationid, userid);
     // user.connect(stationid);
     // console.log('joinStation');
@@ -173,6 +181,9 @@
 
   function seqChange(data) {
     console.log('seqChange: ' + JSON.stringify(data));
+    $('ul#log').append(`<li>${user.node.id}: ${data.state}</li>`);
+    console.log(user.connections);
+    console.log("connections");
     user.connections.forEach( (nid) => {
       user.transmitSeqChange(nid, data);
     });
@@ -182,10 +193,10 @@
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
-  //function displayMsg(peerId, msg){
-    //console.log(`${peerId}: ${msg}`);
-    //$('ul#log').append(`<li>${peerId}: ${msg}</li>`);
-  //}
+  function displayLog(nodeId, msg){
+    console.log(`${nodeId}: ${msg}`);
+    $('ul#log').append(`<li>${nodeId}: ${msg}</li>`);
+  }
 </script>
 
 <script>
@@ -202,8 +213,6 @@
       });
   });
 </script>
-
-<!-- Chat Script -->
 
 <br/> <br/> <br/> 
 </body>
