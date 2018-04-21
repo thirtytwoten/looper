@@ -181,6 +181,7 @@
     new Sample('F#', 'https://raw.githubusercontent.com/Tonejs/Tone.js/master/examples/audio/casio/Fs2.mp3')
   ];
   // initialize sequencer matrix from class defined in SoundMatrix.js
+  let remoteAuthor;
   let matrix = new SoundMatrix(
       'seq',
       sounds,
@@ -201,16 +202,22 @@
 
   function seqChange(data) {
     console.log('seqChange: ' + JSON.stringify(data));
+    let author = remoteAuthor || user.getId();
+    displayLog(author, `set [${data.row},${data.column}] to ${data.state}`);
     //$('ul#log').append(`<li>${user.node.id}: ${data.state}</li>`);
-    console.log(user.connections);
-    console.log("connections");
-    user.connections.forEach( (nid) => {
-      user.transmitSeqChange(nid, data);
-    });
+    // console.log(user.connections);
+    // console.log("connections");
+    if(!remoteAuthor || user.getId()===station.ownerid){
+      user.connections.forEach( (nid) => {
+        user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+      });
+    }
+    remoteAuthor = null;
   }
 
   function updateSeq(data){
     // update cell on sequencer (TODO: move to SoundMatrix class)
+    remoteAuthor = data.author;
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 

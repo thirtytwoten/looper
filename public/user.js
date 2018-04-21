@@ -37,7 +37,6 @@ class User {
           displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
           updateSeq(d.data);
-          displayLog(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`);
         } 
       });
       
