@@ -102,4 +102,16 @@ class SoundMatrix {
     this.loop.stop();
   }
 
+  getPattern() {
+    return this.sequencer.matrix.pattern;
+  }
+
+  initPattern(data) {
+    this.sequencer.matrix.set.all(data);
+  }
+
+  setCell(column, row, state){
+    this.sequencer.matrix.set.cell(column, row, state);
+  }
+
 }

@@ -7,14 +7,16 @@
 // (right now this doesn't have soundBoard functionality, but would be cool to integrate SoundMatrix functionality
 
 class Station {
-  constructor(station, soundBoard){
+  constructor(station, userid, soundBoard){
+    this.user = user;
     this.ownerid = station.ownerid;
     this.connectedPeers = station.connectedPeers;
     this.soundBoard = soundBoard;
     this.name = station.name;
     this.createdAt = station.createdAt;
+    this.pattern = null;
   }
-
+  
   age(){
     return Date.now() - this.createdAt;
   }

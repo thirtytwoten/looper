@@ -119,11 +119,12 @@
   let userid = $('#userid').data('userid');
   let stationData = $('#station').data('station');
 
-  // create station from class defined in station.js
-  let station = new Station(stationData, null);
-  let stationid = station.ownerid;
   // create user from class defined in user.js
   let user = new User(userid);
+
+  // create station from class defined in station.js
+  let station = new Station(stationData, user, null);
+  let stationid = station.ownerid;
 
   // show station info in view
   $('#node-id').text(`You are: ${user.node.id}`);
@@ -133,7 +134,7 @@
   });
 
 
-    document.getElementById("form").onsubmit = function(e) {
+  document.getElementById("form").onsubmit = function(e) {
     e.preventDefault();
     var msg = $('#text').val();
      $('ul#peermsg').append(`<li>${user.node.id}: ${msg}</li>`);
@@ -191,7 +192,19 @@
 
   function updateSeq(data){
     // update cell on sequencer (TODO: move to SoundMatrix class)
-    matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
+    matrix.setCell(data.column, data.row, data.state);
+  }
+
+  // init sequencer with an array of rows data
+  // data = [
+  //   [0,1,0,1,0,1,0,1,0,1],
+  //   [0,1,0,1,0,1,0,1,0,1],
+  //   [0,1,0,1,0,1,0,1,0,1],
+  //   [0,1,0,1,0,1,0,1,0,1],
+  //   [0,1,0,1,0,1,0,1,0,1]
+  // ]
+  function initSeq(data) {
+    matrix.initPattern(data);
   }
 
   //function displayMsg(peerId, msg){

@@ -24,10 +24,6 @@ class User {
     });
     n.on('connection', (c) => {
       console.log('connection: ' + c.peer);
-      if(!this.connections.includes(c.peer)){
-        // make back&forth connection
-        this.connect(c.peer);
-      }
       c.on('data', (data) => {
         let d = JSON.parse(data);
         if(d.type === 'msg'){
@@ -35,8 +31,11 @@ class User {
           displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
           updateSeq(d.data); // function in station.hbs
-          displayMsg(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`); // function in station.hbs
-        } 
+          displayMsg(c.peer, `set [${d.data.row},${d.data.column}] to ${d.data.state}`);
+        } else if (d.type === 'seqInit'){
+          console.log('seqInit');
+          initSeq(d.data); // function in station.hbs
+        }
       });
       c.on('close', () => {
         displayMsg(c.peer, ' has left');
@@ -44,14 +43,21 @@ class User {
         if (i > -1) {
           this.connections.splice(i, 1);
         }
-        
       });
+      if(!this.connections.includes(c.peer)){
+        this.connect(c.peer); // make back&forth connection
+      }
     });
   }
 
   connect(nodeId) {
     let c = this.node.connect(nodeId);
     this.connections.push(c.peer);
+    // if user is station owner transmit initSeq state
+    if (station.ownerid === this.getId()) {
+      console.log(`send init to ${c.peer}`);
+      this.transmitInitData(c.peer, matrix.getPattern());
+    }
     //e.g. w/ options...
       // var c = peer.connect(requestedPeer, {
       //     label: 'chat',
@@ -66,6 +72,10 @@ class User {
 
   transmitSeqChange(nodeId, data) {
     this.transmit(nodeId, {type: 'seqChange', data: data});
+  }
+
+  transmitInitData(nodeId, pattern) {
+    this.transmit(nodeId, { type: 'seqInit', data: pattern})
   }
 
   transmit(nodeId, data) {
