@@ -128,9 +128,15 @@
   // show station info in view
   $('#node-id').text(`You are: ${user.node.id}`);
   $('#station-id').text(`Station owner: ${station.ownerid}`);
-  station.connectedPeers.forEach((p)=>{
-    $('ul#peers').append(`<li>${p}</li>`)
-  });
+
+  updatePeerList(station.connectedPeers);
+
+  function updatePeerList(peers) {
+    console.log(peers);
+    peers.forEach((p)=>{
+      $('ul#peers').append(`<li>${p}</li>`)
+    });
+  }
 
 
     document.getElementById("form").onsubmit = function(e) {

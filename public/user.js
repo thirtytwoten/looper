@@ -29,6 +29,8 @@ class User {
         this.connect(c.peer);
       }
       c.on('data', (data) => {
+        data.receivedAt = Date.now();
+        data.latency = data.receivedAt - data.sentAt;
         let d = JSON.parse(data);
         if(d.type === 'msg'){
           console.log('data: ' + data);
@@ -69,6 +71,7 @@ class User {
   }
 
   transmit(nodeId, data) {
+    data.sentAt = Date.now();
     let str = JSON.stringify(data);
     let conns = this.node.connections[nodeId];
     for (let i = 0; i < conns.length; i++){
