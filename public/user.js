@@ -21,7 +21,7 @@ class User {
 	this.latencies = {};
 	
 	// Similarly above, but tracks throughput (size of packets) from connected peers.
-	this.throughput = {}
+	this.throughput = {};
   }
 
   configureNode(n) {
@@ -55,7 +55,6 @@ class User {
           console.log('data: ' + data);
           displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
-<<<<<<< HEAD
           updateSeq(d.data);
         }
 			
@@ -65,13 +64,10 @@ class User {
 		if (this.node.isStation) {
 			this.node.latencies[sender].push(data.latency);
 		}*/
-=======
-          updateSeq(d.data); // function in station.hbs
-        } else if (d.type === 'seqInit'){
+        else if (d.type === 'seqInit'){
           console.log('seqInit event');
           initSeq(d.data); // function in station.hbs
         }
->>>>>>> 4c0b06e98c0f9ce6d6594bd96d986dcd589aa71c
       });
       
       c.on('close', () => {
