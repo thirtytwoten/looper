@@ -198,16 +198,6 @@
     matrix.stop();
   }
 
-  if(user.getId()===station.ownerid){
-    trackChanges();
-  }
-
-  function initSeq(data) {
-    console.log(`station.hbs, initSeq`);
-    matrix.initPattern(data);
-    trackChanges();
-  }
-
   function seqChange(data) {
     console.log('seqChange: ' + JSON.stringify(data));
     let author = remoteAuthor || user.getId();
@@ -239,6 +229,18 @@
     console.log(`${nodeId}: ${msg}`);
     $('ul#log').append(`<li>${nodeId}: ${msg}</li>`);
   }
+
+  function initSeq(data) {
+    console.log(`station.hbs, initSeq`);
+    matrix.initPattern(data);
+    trackChanges();
+  }
+
+  if(user.getId()===station.ownerid){
+    trackChanges();
+  }
+
+
 </script>
 
 <script>

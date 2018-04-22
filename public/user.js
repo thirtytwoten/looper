@@ -40,7 +40,7 @@ class User {
         } else if (d.type === 'seqInit'){
           console.log('seqInit event');
           initSeq(d.data); // function in station.hbs
-       }
+        }
       });
       
       c.on('close', () => {
@@ -50,23 +50,16 @@ class User {
           this.connections.splice(i, 1);
         }
       });
-
-      // if user is station owner transmit initSeq state
-      if (station.ownerid === this.getId()) {
-        this.transmitInitData(c.peer, matrix.getPattern());
-      }
     });
   }
 
   connect(nodeId) {
     let c = this.node.connect(nodeId);
     this.connections.push(c.peer);
-    //e.g. w/ options...
-      // var c = peer.connect(requestedPeer, {
-      //     label: 'chat',
-      //     serialization: 'none',
-      //     metadata: {message: 'hi i want to chat with you!'}
-      //   });
+    if (station.ownerid === this.getId()) {
+      // hack to make init happen after connection is formed -- TODO fix this
+      setTimeout(()=>{this.transmitInitData(c.peer, matrix.getPattern()), 2000});
+    }
   }
 
   transmitMsg(nodeId, msg) {
