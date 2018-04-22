@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Monoton|Press+Start+2P');
 
-body {
+/*body {
   margin: 0;
   padding: 0;
   background: url('http://cdn.backgroundhost.com/backgrounds/subtlepatterns/asfalt.png');
   /*background: url('https://thiswallpaper.com/cdn/hdwallpapers/817/awesome%20galaxy%20high%20quality%20image.jpg');*/
-  font-family: 'Monoton', cursive;
+  /*font-family: 'Monoton', cursive;
   color: #fff
 }
 h1 {
@@ -58,12 +58,12 @@ border-radius:0 0 3px 3px;
   border-radius: 0;
 }
 /*Neon CSS code from: https://codepen.io/FelixRilling/pen/qzfoc*/
-.neon {
+/*.neon {
   margin: 0;
   font-size: 7em;
   margin: 20px 0 20px 0;
   /*text-shadow: 0 0 20px #f441f1;*/
-  text-decoration: none;
+  /*text-decoration: none;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   transition: all 0.5s;
@@ -94,11 +94,11 @@ border-radius:0 0 3px 3px;
   to {
     text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FF1177, 0 0 35px #FF1177, 0 0 40px #FF1177, 0 0 50px #FF1177, 0 0 75px #FF1177;
   }
-}
+}*/
 
 /* SYNTH STYLES */
 #synth{
-  height: 320px;
+  height: 300px;
   width: 930px;
 }
 ul#keys {
@@ -135,4 +135,3 @@ li.black:active {
   box-shadow:-1px -1px 2px rgba(255,255,255,0.2) inset, 0 -2px 2px 3px rgba(0,0,0,0.6) inset, 0 1px 2px rgba(0,0,0,0.5);
   background:linear-gradient(left, #444 0%,#222 100%);
 }
-
