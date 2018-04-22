@@ -55,6 +55,7 @@ class User {
           console.log('data: ' + data);
           displayMsg(c.peer, d.data); // function in station.hbs
         } else if (d.type === 'seqChange'){
+<<<<<<< HEAD
           updateSeq(d.data);
         }
 			
@@ -64,6 +65,13 @@ class User {
 		if (this.node.isStation) {
 			this.node.latencies[sender].push(data.latency);
 		}*/
+=======
+          updateSeq(d.data); // function in station.hbs
+        } else if (d.type === 'seqInit'){
+          console.log('seqInit event');
+          initSeq(d.data); // function in station.hbs
+        }
+>>>>>>> 4c0b06e98c0f9ce6d6594bd96d986dcd589aa71c
       });
       
       c.on('close', () => {
@@ -72,7 +80,6 @@ class User {
         if (i > -1) {
           this.connections.splice(i, 1);
         }
-        
       });
     });
   }
@@ -80,12 +87,10 @@ class User {
   connect(nodeId) {
     let c = this.node.connect(nodeId);
     this.connections.push(c.peer);
-    //e.g. w/ options...
-      // var c = peer.connect(requestedPeer, {
-      //     label: 'chat',
-      //     serialization: 'none',
-      //     metadata: {message: 'hi i want to chat with you!'}
-      //   });
+    if (station.ownerid === this.getId()) {
+      // hack to make init happen after connection is formed -- TODO fix this
+      setTimeout(()=>{this.transmitInitData(c.peer, matrix.getPattern()), 2000});
+    }
   }
 
   transmitMsg(nodeId, msg) {
@@ -94,6 +99,10 @@ class User {
 
   transmitSeqChange(nodeId, data) {
     this.transmit(nodeId, {type: 'seqChange', data: data});
+  }
+
+  transmitInitData(nodeId, pattern) {
+    this.transmit(nodeId, {type: 'seqInit', data: pattern})
   }
 
   transmit(nodeId, data) {

@@ -41,7 +41,7 @@ class Sample extends Sound {
     } else {
       //this.player.restart(t, 0, "32n");
     }
-    
+
   }
 }
 
@@ -73,11 +73,15 @@ class SoundMatrix {
 
   createSequencer(selector) {
     this.sequencer = new Nexus.Sequencer( selector, {
-     'size': [800,200],
+     'size': [900,270],
      'mode': 'toggle',
      'rows': this.sounds.length,
      'columns': this.beatLength
     });
+
+    this.sequencer.colorize("accent","#dc3545");
+    this.sequencer.colorize("fill","#ffc107");
+
     this.loop = new Tone.Sequence((time, col)=>{
       this.playBeat(time, col);
     }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
@@ -92,6 +96,14 @@ class SoundMatrix {
       }
     });
     this.sequencer.next();
+  }
+
+  getPattern() {
+    return this.sequencer.matrix.pattern;
+  }
+
+  initPattern(data) {
+    this.sequencer.matrix.set.all(data);
   }
 
   start() {
