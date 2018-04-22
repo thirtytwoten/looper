@@ -79,8 +79,8 @@ class SoundMatrix {
      'columns': this.beatLength
     });
 
-    this.sequencer.colorize("accent","#ff0");
-    this.sequencer.colorize("fill","#323156");
+    this.sequencer.colorize("accent","#dc3545");
+    this.sequencer.colorize("fill","#ffc107");
 
     this.loop = new Tone.Sequence((time, col)=>{
       this.playBeat(time, col);
@@ -96,6 +96,14 @@ class SoundMatrix {
       }
     });
     this.sequencer.next();
+  }
+
+  getPattern() {
+    return this.sequencer.matrix.pattern;
+  }
+
+  initPattern(data) {
+    this.sequencer.matrix.set.all(data);
   }
 
   start() {
