@@ -110,34 +110,52 @@
       </div>
     </div>
   </div>
-          </div>
-      <div class="row">
-        <!--div class="col-lg-1"></div-->
-        <div class="col-lg-5">
-        <button type="button" class="ht-tm-element btn btn-block btn-secondary display-1 text-danger" style = "height: 60px; font-size: 2em;" onclick=start()>Start</button>
-      </div>
-      <div class = "col-lg-5">
-        <button type="button" class="ht-tm-element btn btn-block btn-secondary display-1 text-danger" style = "height: 60px; font-size: 2em;" onclick=stop()>Stop</button>
-      </div>
+</div>
+
+  <div class="row">
+    <!--div class="col-lg-1"></div-->
+    <div class="col-lg-5">
+      <button type="button" class="ht-tm-element btn btn-block btn-secondary display-1 text-danger" style = "height: 60px; font-size: 2em;" onclick=start()>Start</button>
+    </div>
+    <div class = "col-lg-5">
+      <button type="button" class="ht-tm-element btn btn-block btn-secondary display-1 text-danger" style = "height: 60px; font-size: 2em;" onclick=stop()>Stop</button>
+    </div>
       <!--div class= "col-lg-2"></div-->
-      </div>
-      <div class = "row" style = "padding-top: 8px; padding-box: 6px;">
-      <div class = "col-lg-5" >
-        <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
+  </div>
+    
+  <div class = "row" style = "padding-top: 8px; padding-box: 6px;">
+
+    <div class = "col-lg-5" >
+      <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
         <div class = "card-body">
-        <h3 class = "display-4 text-danger">Chat</h3>
-      <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
-        <ul class="list-group ht-tm-element" id="peermsg">
-        </ul>
+          <h3 class = "display-4 text-danger">Chat</h3>
+          <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
+            <ul class="list-group ht-tm-element" id="peermsg"></ul>
             <form class="form-group" id = "form">
-                <label for="text">Enter message</label>
-                  <input type="text" class="form-control" id ="text" placeholder="Enter message">
+              <label for="text">Enter message</label>
+              <input type="text" class="form-control" id ="text" placeholder="Enter message">
               <button type="submit" class="btn btn-secondary" value="Send">Submit</button>
             </form>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
+
+      <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
+        <div class = "card-body">
+          <h3 class = "display-4 text-danger">Invite your friends</h3>
+          <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
+            <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
+              <input id="email" type="text" class="form-control" maxlength="64" style="width:98%;" value="" placeholder="Enter friend's email"/>
+              <input type="submit" class="btn btn-secondary" value="Invite" />
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div> <!--/col-lg-5-->
+{{!--   </div> <!--/row--> --}}
+
+{{!-- </div> --}}
         <!--div class="col-sm"></div-->
         <div class = "col-lg-5">
           <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
@@ -151,14 +169,16 @@
     </div>
   </div>
   </div>
-  <div>
+
+
+{{!--   <div>
     <h2 id='station-id'>Station Id: </h2>
     <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
       <h3>Enter Friend's Email:<h3>
       <input id="email" type="text" maxlength="64" style="width:98%;" value="" />
       <input type="submit" value="Invite" />
     </form>
-  </div>
+  </div> --}}
 <!--/div>
 
 <div style="clear:both"></div-->
