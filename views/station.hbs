@@ -40,7 +40,7 @@
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-md-0">
           <li class="nav-item active">
-            <a class="nav-link display-3" href="#!">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link display-3" href="../">Home <span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
@@ -51,11 +51,13 @@
         </div>
 
     <div class ="row">
-    <div class="col-lg-9">
+    <div class="col-lg-10">
       <div id ="seq"></div>
       <div class = "row">
-        <div class="col-lg" style="background-color: #ffbc21; height: 280px; margin: 2px;margin-left: 40px;">
-        <div id="synth">
+        <div class="col-lg-11" >
+        <div class = "card" style="background-color: #ffbc21; height: 300px; width: 860px;margin: 2px;margin-left: 20px;">
+        <div class = "card-body">
+        <div id="synth" style ="">
           <ul id="keys">
             <li id="0" class="white a" > </li>
             <li id="1" class="black a" ></li>
@@ -91,48 +93,60 @@
             <li id="31" class="white"> </li>
           </ul>
         </div>
-        </div>
-        <!--div class="col-lg-5" style="background-color: grey; height: 100px; margin: 2px;"></div-->
       </div>
     </div>
-    <div class = "col-lg-1"></div>
-    <div class = "col-lg-2" style = "padding-left: 0px; background-color:#e8a610; z-index: -1;">
-        <h3>Chat</h3>
-      <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner">
-        <ul class="list-group ht-tm-element" id="peermsg">
-        </ul>
-            <form id = "form">
-              <div class="form-group">
-                <label for="Enter message">Email address</label>
-                  <input type="text" id="text" placeholder="Enter message">
-              </div>
-              <button type="submit" class="btn btn-secondary" value="Send">Submit</button>
-            </form>
-          </div>
+        </div>
+      </div>
+    </div>
+    <div class = "col-lg-2">
+    <div class = "card" style = "padding-left: 0px; background-color:#e8a610; height: 100%;">
+    <div class = "card-body">
+      <!--This is where the Chat box used to be-->
+        <h3 class = "display-4 text-danger" style = "font-size: 1.6em;">Connected Peers </h3>
+        <div style = "background-color: #e8a610;">
+          <ul id='peers' class="list-group ht-tm-element">
+      </ul>
+        </div>
+      </div>
     </div>
   </div>
-      <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-4">
-        <button type="button" class="ht-tm-element btn btn-block btn-secondary" onclick=start()>Start</button>
-      </div>
-      <div class = "col-lg-4">
-        <button type="button" class="ht-tm-element btn btn-block btn-secondary" onclick=stop()>Stop</button>
-      </div>
-      <div class= "col-lg-2"></div>
-      </div>
-      <div class = "row">
-        <div class = "col-lg-6" style = "background-color: grey">
-          <h3 = "display-3">Connected Peers: </h3>
-          <div style = "background-color: #e8a610;">
-            <ul id='peers' class="list-group ht-tm-element">
-        </ul>
-          <ul ><ul>
           </div>
-        <div class = "col-lg-6" style = "background-color: grey">
-          <h3>Debug Log</h3>
-          <p>Todo...</p>
+      <div class="row">
+        <!--div class="col-lg-1"></div-->
+        <div class="col-lg-5">
+        <button type="button" class="ht-tm-element btn btn-block btn-secondary display-1 text-danger" style = "height: 60px; font-size: 2em;" onclick=start()>Start</button>
+      </div>
+      <div class = "col-lg-5">
+        <button type="button" class="ht-tm-element btn btn-block btn-secondary display-1 text-danger" style = "height: 60px; font-size: 2em;" onclick=stop()>Stop</button>
+      </div>
+      <!--div class= "col-lg-2"></div-->
+      </div>
+      <div class = "row" style = "padding-top: 8px; padding-box: 6px;">
+      <div class = "col-lg-5" >
+        <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
+        <div class = "card-body">
+        <h3 class = "display-4 text-danger">Chat</h3>
+      <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
+        <ul class="list-group ht-tm-element" id="peermsg">
+        </ul>
+            <form class="form-group" id = "form">
+                <label for="text">Enter message</label>
+                  <input type="text" class="form-control" id ="text" placeholder="Enter message">
+              <button type="submit" class="btn btn-secondary" value="Send">Submit</button>
+            </form>
         </div>
+      </div>
+    </div>
+    </div>
+        <!--div class="col-sm"></div-->
+        <div class = "col-lg-5">
+          <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
+          <div class = "card-body">
+          <h3 class = "display-4 text-danger">Debug Log</h3>
+          <ul id= "log"></ul>
+        </div>
+      </div>
+    </div>
         <!--div class = "col-lg-3"></div-->
     </div>
   </div>
@@ -231,17 +245,20 @@
   function seqChange(data) {
     console.log('seqChange: ' + JSON.stringify(data));
     let author = remoteAuthor || user.getId();
-    displayLog(author, `set [${data.row},${data.column}] to ${data.state}`);
+    $('ul#log').append(`<li>${user.node.id}: set [${data.row},${data.column}] to ${data.state}</li>`);
     //$('ul#log').append(`<li>${user.node.id}: ${data.state}</li>`);
     // console.log(user.connections);
     // console.log("connections");
     if(!remoteAuthor || user.getId()===station.ownerid){
       user.connections.forEach( (nid) => {
-        user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+        if (nid !== remoteAuthor) { // no need to transmit back to person who made the changes
+          user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+          user.transmitSeqChangeLog(nid, `set [${data.row},${data.column}] to ${data.state}`);
+        }
       });
     }
     remoteAuthor = null;
-	
+
 	// Show latencies for this node's connections
 	user.showLatency();
 	user.showThroughput();
@@ -254,14 +271,16 @@
   }
 
   function updateSeq(data){
-    // update cell on sequencer (TODO: move to SoundMatrix class)
-    remoteAuthor = data.author;
+    // update cell on sequencer
+    if(data.author !== user.getId()){ //(just in case change ended up getting propegated back to author)
+      remoteAuthor = data.author;
+    }
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
-  function displayLog(nodeId, msg){
-    console.log(`${nodeId}: ${msg}`);
-    $('ul#log').append(`<li>${nodeId}: ${msg}</li>`);
+  function displayLog(nodeId, data){
+    console.log(`${nodeId}: ${data}`);
+    $('ul#log').append(`<li>${nodeId}: ${data}</li>`);
   }
 
   function initSeq(data) {
@@ -289,8 +308,18 @@
       var dist = new Tone.Distortion(2).toMaster();
       var synth = new Tone.Synth().connect(dist);
       synth.triggerAttackRelease(pianoFrequency(this.id), "8n");
+      user.connections.forEach( (nid) => {
+        user.transmitPiano(nid,this.id);
       });
+    });
   });
+  
+  function updatePiano (ID){
+      console.log(ID);
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttackRelease(pianoFrequency(ID), "8n");
+  }
 </script>
 
 <br/> <br/> <br/>
