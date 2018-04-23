@@ -320,7 +320,14 @@
       });
     });
   });
-
+  
+  function updatePiano (ID){
+      console.log(ID);
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttackRelease(pianoFrequency(ID), "8n");
+  }
+  
 function sendMail() {
 var email = document.getElementById("email").value;
 var body = `${user.node.id}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
