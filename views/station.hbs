@@ -152,8 +152,8 @@
   let stationid = station.ownerid;
   // create user from class defined in user.js
   // Allow user also track station it is associated with - removed for testing
-  let user = new User(userid, stationid);
-  //let user = new User(userid;
+  //let user = new User(userid, stationid);
+  let user = new User(userid);
 
   // set station info
   // let Tracker = [];
@@ -242,7 +242,7 @@
     }
     remoteAuthor = null;
 	
-	// Show latencies for this node's connections
+	// Show latencies and throughput for this node's connections
 	user.showLatency();
 	user.showThroughput();
   }

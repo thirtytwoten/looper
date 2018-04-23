@@ -9,11 +9,11 @@
 let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 
 class User {
-  constructor(userid, stationid){
+  constructor(userid){
     this.node = new Peer(userid, peerServerInfo);
     this.configureNode(this.node);
     this.connections = [];
-	this.hostStation = stationid;
+	//this.hostStation = stationid;
 	//this.isStation = false;
 	// This will be a dictionary, and each node will have one.
 	// key : userID of a node connected to this one
@@ -54,7 +54,11 @@ class User {
         if(d.type === 'msg'){
           console.log('data: ' + data);
           displayMsg(c.peer, d.data); // function in station.hbs
+		  //this.latencies[sender].push(d.latency);
+		  //this.throughput[sender].push(d.bitSize);
         } else if (d.type === 'seqChange'){
+		  //this.latencies[sender].push(d.latency);
+		  //this.throughput[sender].push(d.bitSize);
           updateSeq(d.data);
         }
 			
@@ -83,6 +87,8 @@ class User {
   connect(nodeId) {
     let c = this.node.connect(nodeId);
     this.connections.push(c.peer);
+	this.latencies[c.peer] = [];
+	this.throughput[c.peer] = [];
     if (station.ownerid === this.getId()) {
       // hack to make init happen after connection is formed -- TODO fix this
       setTimeout(()=>{this.transmitInitData(c.peer, matrix.getPattern()), 2000});
