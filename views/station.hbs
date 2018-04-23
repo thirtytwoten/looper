@@ -126,6 +126,7 @@
         <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
         <div class = "card-body">
         <h3 class = "display-4 text-danger">Chat</h3>
+
       <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
         <ul class="list-group ht-tm-element" id="peermsg">
         </ul>
@@ -151,7 +152,14 @@
     </div>
   </div>
   </div>
-
+  <div>
+    <h2 id='station-id'>Station Id: </h2>
+    <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
+      <h3>Enter Friend's Email:<h3>
+      <input id="email" type="text" maxlength="64" style="width:98%;" value="" />
+      <input type="submit" value="Invite" />
+    </form>
+  </div>
 <!--/div>
 
 <div style="clear:both"></div-->
@@ -320,10 +328,20 @@
       var synth = new Tone.Synth().connect(dist);
       synth.triggerAttackRelease(pianoFrequency(ID), "8n");
   }
+
+
+function sendMail() {
+var email = document.getElementById("email").value;
+var body = `${user.node.id}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
+//var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
+var link = `mailto: ${email}?cc=&subject=Looper Invitation!&body=${body}`;
+console.log(link);
+window.location.href = link;
+}
 </script>
 
 <br/> <br/> <br/>
-<!-- Chat Script -->
+
 <br/> <br/> <br/>
 
 </body>
