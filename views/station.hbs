@@ -126,7 +126,6 @@
         <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
         <div class = "card-body">
         <h3 class = "display-4 text-danger">Chat</h3>
-
       <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
         <ul class="list-group ht-tm-element" id="peermsg">
         </ul>
@@ -221,9 +220,9 @@
     // console.log('joinStation');
   }
 
-//</script>
+</script>
 
-//<script>
+<script>
   let remoteAuthor;
 
   let context = new (window.AudioContext || window.webkitAudioContext)();
@@ -268,8 +267,8 @@
     remoteAuthor = null;
 
 	// Show latencies for this node's connections
-	user.showLatency();
-	user.showThroughput();
+	//user.showLatency();
+	//user.showThroughput();
   }
 
   function trackChanges(){
@@ -321,7 +320,9 @@
       });
     });
   });
-  
+  //if(user.getId()===station.ownerid){
+  //  trackPianoChanges();
+  //}
   function updatePiano (ID){
       console.log(ID);
       var dist = new Tone.Distortion(2).toMaster();
@@ -330,14 +331,14 @@
   }
 
 
-function sendMail() {
-var email = document.getElementById("email").value;
-var body = `${user.node.id}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
-//var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
-var link = `mailto: ${email}?cc=&subject=Looper Invitation!&body=${body}`;
-console.log(link);
-window.location.href = link;
-}
+  function sendMail() {
+    var email = document.getElementById("email").value;
+    var body = `${user.node.id}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
+    //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
+    var link = `mailto: ${email}?cc=&subject=Looper Invitation!&body=${body}`;
+    console.log(link);
+    window.location.href = link;
+  }
 </script>
 
 <br/> <br/> <br/>
