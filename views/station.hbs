@@ -126,7 +126,6 @@
         <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
         <div class = "card-body">
         <h3 class = "display-4 text-danger">Chat</h3>
-
       <div class="ht-tm-codeblock ht-tm-btn-replaceable ht-tm-element ht-tm-element-inner" style = "padding-left: 15px;">
         <ul class="list-group ht-tm-element" id="peermsg">
         </ul>
@@ -268,8 +267,8 @@
     remoteAuthor = null;
 
 	// Show latencies for this node's connections
-	user.showLatency();
-	user.showThroughput();
+	//user.showLatency();
+	//user.showThroughput();
   }
 
   function trackChanges(){
@@ -321,14 +320,6 @@
       });
     });
   });
-  
-  function updatePiano (ID){
-      console.log(ID);
-      var dist = new Tone.Distortion(2).toMaster();
-      var synth = new Tone.Synth().connect(dist);
-      synth.triggerAttackRelease(pianoFrequency(ID), "8n");
-  }
-
 
 function sendMail() {
 var email = document.getElementById("email").value;
