@@ -235,7 +235,9 @@
     // console.log("connections");
     if(!remoteAuthor || user.getId()===station.ownerid){
       user.connections.forEach( (nid) => {
-        user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+        if (nid !== remoteAuthor) { // no need to transmit back to person who made the changes
+          user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+        }
       });
     }
     remoteAuthor = null;
@@ -252,8 +254,10 @@
   }
 
   function updateSeq(data){
-    // update cell on sequencer (TODO: move to SoundMatrix class)
-    remoteAuthor = data.author;
+    // update cell on sequencer
+    if(data.author !== user.getId()){ //(just in case change ended up getting propegated back to author)
+      remoteAuthor = data.author;
+    }
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
