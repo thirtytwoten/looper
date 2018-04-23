@@ -60,7 +60,10 @@ class User {
 		  //this.latencies[sender].push(d.latency);
 		  //this.throughput[sender].push(d.bitSize);
           updateSeq(d.data);
-        }
+        } else if(d.type === 'PianoChange'){
+          console.log('Pianodata: ' + data);
+          updatePiano(d.data); // function in station.hbs
+      }
 			
 		// Handle Latency measurements
 		/* Commented out since we have not implemented "station nodes"
@@ -105,6 +108,10 @@ class User {
 
   transmitInitData(nodeId, pattern) {
     this.transmit(nodeId, {type: 'seqInit', data: pattern})
+  }
+
+  transmitPiano(nodeId, Id) {
+    this.transmit(nodeId, {type: 'PianoChange', data: Id})
   }
 
   transmit(nodeId, data) {

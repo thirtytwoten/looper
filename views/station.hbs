@@ -291,8 +291,22 @@
       var dist = new Tone.Distortion(2).toMaster();
       var synth = new Tone.Synth().connect(dist);
       synth.triggerAttackRelease(pianoFrequency(this.id), "8n");
+      user.connections.forEach( (nid) => {
+        user.transmitPiano(nid,this.id);
       });
+    });
   });
+
+  if(user.getId()===station.ownerid){
+    trackPianoChanges();
+  }
+
+  function updatePiano (ID){
+      console.log(ID);
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttackRelease(pianoFrequency(ID), "8n");
+  }
 </script>
 
 <br/> <br/> <br/>
