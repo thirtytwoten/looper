@@ -61,6 +61,10 @@ class User {
         } else if(d.type === 'PianoClick'){
           console.log('Pianodata: ' + data);
           pianoClick(d.data); // function in station.hbs
+        } else if(d.type === 'PianoPress'){
+          pianoKeyPress(d.author, d.keyCode, false); // function in station.hbs
+        } else if(d.type === 'PianoRelease'){
+          pianoKeyRelease(d.author, d.keyCode, false); // function in station.hbs
         } else if (d.type === 'seqInit'){
           console.log('seqInit event');
           initSeq(d.data); // function in station.hbs
@@ -122,6 +126,14 @@ class User {
 
   transmitPianoClick(nodeId, Id) {
     this.transmit(nodeId, {type: 'PianoClick', data: Id})
+  }
+
+  transmitPianoPress(nodeId, keyCode) {
+    this.transmit(nodeId, {type: 'PianoPress', keyCode: keyCode, author: this.userid});
+  }
+
+  transmitPianoRelease(nodeId, keyCode) {
+    this.transmit(nodeId, {type: 'PianoRelease', keyCode: keyCode, author: this.userid});
   }
 
   transmit(nodeId, data) {

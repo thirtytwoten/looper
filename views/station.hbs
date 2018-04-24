@@ -357,27 +357,32 @@
 
   let activeSounds = {};
 
-  document.addEventListener('keydown',(e)=>{ pianoKeyPress(user.userid, e.code) });
-  document.addEventListener('keyup', (e)=>{ pianoKeyRelease(user.userid, e.code) });
+  document.addEventListener('keydown',(e)=>{ pianoKeyPress(user.userid, e.code, true) });
+  document.addEventListener('keyup', (e)=>{ pianoKeyRelease(user.userid, e.code, true) });
 
-  function pianoKeyPress(userid, keyCode) {
+  function pianoKeyPress(userid, keyCode, local) {
     let ID = keyMap[keyCode];
     let selector = `#keys li#${ID}`;
     if(!activeSounds[`${userid}-${keyCode}`]){
       activeSounds[`${userid}-${keyCode}`] = newSynth();
-      activeSounds[`${userid}-${keyCode}`].triggerAttack(pianoFrequency(ID));
+      activeSounds[`${userid}-${keyCode}`].triggerAttackRelease(pianoFrequency(ID)); //, 15); < would add max sustain of 15 seconds
     }
-    if(userid === user.userid){
+    if(local){
       if(!$(selector).hasClass('active')){ $(selector).addClass('active') }
-
+      user.connections.forEach((nid) => {
+        user.transmitPianoPress(nid, keyCode);
+      });
     }
   }
 
-  function pianoKeyRelease(userid, keyCode) {
-    if(userid === user.userid){
+  function pianoKeyRelease(userid, keyCode, local) {
+    if(local){
       let ID = keyMap[keyCode];
       let selector = `#keys li#${ID}`;
       $(selector).removeClass('active');
+      user.connections.forEach((nid) => {
+        user.transmitPianoRelease(nid, keyCode);
+      });
     }
     activeSounds[`${userid}-${keyCode}`] && activeSounds[`${userid}-${keyCode}`].triggerRelease();
     activeSounds[`${userid}-${keyCode}`] = null;
