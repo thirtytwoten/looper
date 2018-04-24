@@ -271,7 +271,7 @@
 
   function seqChange(data) {
     let author = remoteAuthor || user.getId();
-    displayLog(author, `set [${data.row},${data.column}] to ${data.state}`);
+    logUserData(author, `set [${data.row},${data.column}] to ${data.state}`);
     if(!remoteAuthor || user.getId()===station.ownerid){
       user.connections.forEach( (nid) => {
         if (nid !== remoteAuthor) { // no need to transmit back to person who made the changes
@@ -300,14 +300,17 @@
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
-  function displayLog(nodeId, data){
-    console.log(`${nodeId}: ${data}`);
-    $('ul#log').append(`<li>${nodeId}: ${data}</li>`);
+  function logUserData(nodeId, data){
+    log(`${nodeId}: ${data}`);
+  }
+
+  function log(str) {
+    $('ul#log').append(`<li>${str}</li>`);
   }
 
   function initSeq(data) {
-    console.log(`station.hbs, initSeq`);
     matrix.initPattern(data);
+    log('[initialize sequencer]');
     trackChanges();
   }
 
