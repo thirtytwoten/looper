@@ -309,12 +309,60 @@
       });
     });
   });
-  function updatePiano (ID){
-    console.log(ID);
-    var dist = new Tone.Distortion(2).toMaster();
-    var synth = new Tone.Synth().connect(dist);
-    synth.triggerAttackRelease(pianoFrequency(ID), "8n");
+
+  let keyMap = {
+    // bottom row
+    'KeyZ' : 0, //F
+    'KeyS' : 1,
+    'KeyX' : 2,
+    'KeyD' : 3,
+    'KeyC' : 4,
+    'KeyF' : 5,
+    'KeyV' : 6,
+    'KeyB' : 7,
+    'KeyH' : 8,
+    'KeyN' : 9,
+    'KeyJ' : 10,
+    'KeyM' : 11,
+    'Comma' : 12,
+    'KeyL' : 13,
+    'Period' : 14,
+    'Semicolon' : 15, //Gsharp
+    // top row
+    'KeyQ' : 16, //A
+    'Digit2' : 17,
+    'KeyW' : 18,
+    'KeyE' : 19,
+    'Digit4' : 20,
+    'KeyR' : 21,
+    'Digit5' : 22,
+    'KeyT' : 23,
+    'KeyY' : 24,
+    'Digit7' : 25,
+    'KeyU' : 26,
+    'Digit8' : 27,
+    'KeyI' : 28,
+    'Digit9' : 29,
+    'KeyO' : 30,
+    'KeyP' : 31 //C
   }
+
+  document.addEventListener('keydown', function(down_event) {
+    let ID = keyMap[down_event.code];
+    let selector = `#keys li#${ID}`;
+    if(!$(selector).hasClass('active')){
+      $(selector).addClass('active');
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttack(pianoFrequency(ID));
+      document.addEventListener('keyup', function(up_event) {
+          if(up_event.code === down_event.code) {
+            $(selector).removeClass('active');
+            synth.triggerRelease();
+          }
+        });
+    }
+  });
 
   function sendMail() {
     var email = document.getElementById("email").value;
