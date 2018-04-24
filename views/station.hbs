@@ -35,82 +35,79 @@
     {{!-- eg. let userid = $('#userid').data('userid'); let stationData = $('#station').data('station'); --}}
 
     <div class="container">
-    <h1 class="display-1 text-danger text-center display-xxl text-uppercase">Looper</h1>
-    <nav class="navbar navbar-expand-lg ht-tm-element navbar-dark bg-secondary">
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-          <li class="nav-item active">
-            <a class="nav-link display-3" href="../">Home <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-     <div class="list-group ht-tm-element" style = "background-color: #e8a610;">
-          <a id = "node-id" class="display-4 list-group-item" style = "background-color: #e8a610;"></a>
-          <a id = "station-id" class="display-4 list-group-item" style = "background-color: #e8a610;"></a>
-        </div>
-
-    <div class ="row">
-    <div class="col-lg-10">
-      <div id ="seq"></div>
-      <div class = "row">
-        <div class="col-lg-11" >
-        <div class = "card" style="background-color: #ffbc21; height: 300px; width: 860px;margin: 2px;margin-left: 20px;">
-        <div class = "card-body">
-        <div id="synth" style ="">
-          <ul id="keys">
-            <li id="0" class="white a" > </li>
-            <li id="1" class="black a" ></li>
-            <li id="2" class="white a"></li>
-            <li id="3" class="black a"></li>
-            <li id="4" class="white a"></li>
-            <li id="5" class="black a"></li>
-            <li id="6" class="white a"></li>
-            <li id="7" class="white"></li>
-            <li id="8" class="black a"></li>
-            <li id="9" class="white a"></li>
-            <li id="10" class="black a"></li>
-            <li id="11" class="white a"></li>
-            <li id="12" class="white"></li>
-            <li id="13" class="black a"></li>
-            <li id="14" class="white a"></li>
-            <li id="15" class="black a"></li>
-            <li id="16" class="white a"></li>
-            <li id="17" class="black a"></li>
-            <li id="18" class="white a"></li>
-            <li id="19" class="white"></li>
-            <li id="20" class="black a"></li>
-            <li id="21" class="white a"></li>
-            <li id="22" class="black a"></li>
-            <li id="23" class="white a"></li>
-            <li id="24" class="white"></li>
-            <li id="25" class="black a"></li>
-            <li id="26" class="white a"></li>
-            <li id="27" class="black a"></li>
-            <li id="28" class="white a"></li>
-            <li id="29" class="black a"></li>
-            <li id="30" class="white a"></li>
-            <li id="31" class="white"> </li>
+      <h1 class="display-1 text-danger text-center display-xxl text-uppercase">Looper</h1>
+      <nav class="navbar navbar-expand-lg ht-tm-element navbar-dark bg-secondary">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+            <li class="nav-item active">
+              <a class="nav-link display-3" href="../">Home <span class="sr-only">(current)</span></a>
+            </li>
           </ul>
         </div>
-      </div>
+      </nav>
+    <div class="list-group ht-tm-element" style = "background-color: #e8a610;">
+      <a id = "node-id" class="display-4 list-group-item" style = "background-color: #e8a610;"></a>
+      <a id = "station-id" class="display-4 list-group-item" style = "background-color: #e8a610;"></a>
     </div>
-        </div>
-      </div>
-    </div>
-    <div class = "col-lg-2">
-    <div class = "card" style = "padding-left: 0px; background-color:#e8a610; height: 100%;">
-    <div class = "card-body">
-      <!--This is where the Chat box used to be-->
-        <h3 class = "display-4 text-danger" style = "font-size: 1.6em;">Connected Peers </h3>
-        <div style = "background-color: #e8a610;">
-          <ul id='peers' class="list-group ht-tm-element">
-      </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+    <div class ="row">
+
+      <div class="col-lg-10">
+        <div id ="seq"></div>
+        <div class ="card" style="background-color: #ffbc21; width: 900px">
+          <div class ="card-body">
+            <div id="synth">
+              <ul id="keys">
+                <li id="0" class="white a" > </li>
+                <li id="1" class="black a" ></li>
+                <li id="2" class="white a"></li>
+                <li id="3" class="black a"></li>
+                <li id="4" class="white a"></li>
+                <li id="5" class="black a"></li>
+                <li id="6" class="white a"></li>
+                <li id="7" class="white"></li>
+                <li id="8" class="black a"></li>
+                <li id="9" class="white a"></li>
+                <li id="10" class="black a"></li>
+                <li id="11" class="white a"></li>
+                <li id="12" class="white"></li>
+                <li id="13" class="black a"></li>
+                <li id="14" class="white a"></li>
+                <li id="15" class="black a"></li>
+                <li id="16" class="white a"></li>
+                <li id="17" class="black a"></li>
+                <li id="18" class="white a"></li>
+                <li id="19" class="white"></li>
+                <li id="20" class="black a"></li>
+                <li id="21" class="white a"></li>
+                <li id="22" class="black a"></li>
+                <li id="23" class="white a"></li>
+                <li id="24" class="white"></li>
+                <li id="25" class="black a"></li>
+                <li id="26" class="white a"></li>
+                <li id="27" class="black a"></li>
+                <li id="28" class="white a"></li>
+                <li id="29" class="black a"></li>
+                <li id="30" class="white a"></li>
+                <li id="31" class="white"> </li>
+              </ul>
+            </div> <!-- synth -->
+          </div> <!-- card-body -->
+        </div> <!-- card -->
+      </div> <!-- col-lg-10 -->
+
+      <div class="col-lg-2">
+        <div class="card" style = "padding-left: 0px; background-color:#e8a610; height: 100%;">
+          <div class="card-body">
+            <h3 class = "display-4 text-danger" style = "font-size: 1.6em;">Connected Peers </h3>
+            <div style = "background-color: #e8a610;">
+              <ul id='peers' class="list-group ht-tm-element"></ul>
+            </div>
+          </div> <!-- card-body -->
+        </div> <!-- card -->
+      </div> <!-- col-lg-2 -->
+
+    </div> <!-- row -->
 
   <div class="row">
     <!--div class="col-lg-1"></div-->
@@ -150,24 +147,20 @@
           </div>
         </div>
       </div>
-
     </div> <!--/col-lg-5-->
-{{!--   </div> <!--/row--> --}}
 
-{{!-- </div> --}}
-        <!--div class="col-sm"></div-->
-        <div class = "col-lg-5">
-          <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
-          <div class = "card-body">
+    <div class = "col-lg-5">
+      <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
+        <div class = "card-body">
           <h3 class = "display-4 text-danger">Debug Log</h3>
           <ul id= "log"></ul>
         </div>
       </div>
     </div>
-        <!--div class = "col-lg-3"></div-->
-    </div>
-  </div>
-  </div>
+
+  </div> <!--/row-->
+
+</div><!--/container-->
 
 <script type="text/javascript">
   // load data embedded in html as js vars
@@ -397,10 +390,6 @@
     window.location.href = link;
   }
 </script>
-
-<br/> <br/> <br/>
-
-<br/> <br/> <br/>
 
 </body>
 </html>
