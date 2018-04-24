@@ -58,10 +58,6 @@ class User {
         } else if(d.type === 'PianoChange'){
           console.log('Pianodata: ' + data);
           updatePiano(d.data); // function in station.hbs
-        } else if(d.type === 'LogData'){
-          console.log('LogData: ' + d.data);
-          console.log('SentBy: ' + d.sentBy);
-          displayLog(d.sentBy, d.data); // function in station.hbs
         } else if (d.type === 'seqInit'){
           console.log('seqInit event');
           initSeq(d.data); // function in station.hbs

@@ -270,17 +270,12 @@
   }
 
   function seqChange(data) {
-    console.log('seqChange: ' + JSON.stringify(data));
     let author = remoteAuthor || user.getId();
-    $('ul#log').append(`<li>${user.node.id}: set [${data.row},${data.column}] to ${data.state}</li>`);
-    //$('ul#log').append(`<li>${user.node.id}: ${data.state}</li>`);
-    // console.log(user.connections);
-    // console.log("connections");
+    displayLog(author, `set [${data.row},${data.column}] to ${data.state}`);
     if(!remoteAuthor || user.getId()===station.ownerid){
       user.connections.forEach( (nid) => {
         if (nid !== remoteAuthor) { // no need to transmit back to person who made the changes
           user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
-          user.transmitSeqChangeLog(nid, `set [${data.row},${data.column}] to ${data.state}`);
         }
       });
     }
