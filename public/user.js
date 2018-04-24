@@ -138,7 +138,6 @@ class User {
     for (let i = 0; i < conns.length; i++){
       conns[i].send(str);
     }
-    console.log(`transmit: ${str}`);
   }
   
   // Need to check logic of these two...returns bits or bytes ???
