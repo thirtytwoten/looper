@@ -184,7 +184,7 @@
   //let user = new User(userid;
 
   // set station info
-  $('#node-id').text(`You are: ${user.node.id}`);
+  $('#node-id').text(`You are: ${user.userid}`);
   $('#station-id').text(`Station owner: ${station.ownerid}`);
 
   updatePeerList(station.connectedPeers);
@@ -243,12 +243,12 @@
   }
 
   function seqChange(data) {
-    let author = remoteAuthor || user.getId();
+    let author = remoteAuthor || user.userid;
     logUserData(author, `set [${data.row},${data.column}] to ${data.state}`);
-    if(!remoteAuthor || user.getId()===station.ownerid){
+    if(!remoteAuthor || user.stationOwner){
       user.connections.forEach( (nid) => {
         if (nid !== remoteAuthor) { // no need to transmit back to person who made the changes
-          user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+          user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.userid}));
         }
       });
     }
@@ -267,7 +267,7 @@
 
   function updateSeq(data){
     // update cell on sequencer
-    if(data.author !== user.getId()){ //(just in case change ended up getting propegated back to author)
+    if(data.author !== user.userid){ //(just in case change ended up getting propegated back to author)
       remoteAuthor = data.author;
     }
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
@@ -287,7 +287,7 @@
     trackChanges();
   }
 
-  if(user.getId()===station.ownerid){
+  if(user.stationOwner){
     trackChanges();
   }
 
@@ -297,9 +297,8 @@
 <script>
   // synth functionality...
   function pianoFrequency(id){
-  var notes = ["F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2", "C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
-  // console.log(`${id}, ${notes[id]}`);
-  return notes[id];
+    var notes = ["F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2", "C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
+    return notes[id];
   };
   $(document).ready(function(){
     $("#keys li").click(function(){
@@ -311,20 +310,16 @@
       });
     });
   });
-  //if(user.getId()===station.ownerid){
-  //  trackPianoChanges();
-  //}
   function updatePiano (ID){
-      console.log(ID);
-      var dist = new Tone.Distortion(2).toMaster();
-      var synth = new Tone.Synth().connect(dist);
-      synth.triggerAttackRelease(pianoFrequency(ID), "8n");
+    console.log(ID);
+    var dist = new Tone.Distortion(2).toMaster();
+    var synth = new Tone.Synth().connect(dist);
+    synth.triggerAttackRelease(pianoFrequency(ID), "8n");
   }
-
 
   function sendMail() {
     var email = document.getElementById("email").value;
-    var body = `${user.node.id}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
+    var body = `${user.userid}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
     //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
     var link = `mailto: ${email}?cc=&subject=Looper Invitation!&body=${body}`;
     console.log(link);

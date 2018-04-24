@@ -3,7 +3,7 @@
 // see https://socket.io/
 //
 // example used in join method of Station class...
-//   public/station.js:    serverLink.emit('joinStation', this.ownerid, user.getId());
+//   public/station.js:    serverLink.emit('joinStation', this.ownerid, user.userid);
 // and picked up by server
 //   server.js:            client.on('joinStation', function(stationownerid, userid){...});
 

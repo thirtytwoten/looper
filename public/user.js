@@ -89,7 +89,7 @@ class User {
     this.connections.push(c.peer);
     this.latencies[c.peer] = [];
     this.throughput[c.peer] = [];
-    if (station.ownerid === this.getId()) {
+    if (this.stationOwner) {
       // hack to make init happen after connection is formed -- TODO fix this
       setTimeout(()=>{this.transmitInitData(c.peer, matrix.getPattern()), 2000});
     }
@@ -126,7 +126,7 @@ class User {
 
   transmit(nodeId, data) {
     data["sentAt"] = Date.now();
-    data["sentBy"] = this.node.id;
+    data["sentBy"] = this.userid;
 	
     // This is questionable...size of data calculated before assigning it.
     let datSize = this.dataSize(data);
@@ -139,10 +139,6 @@ class User {
       conns[i].send(str);
     }
     console.log(`transmit: ${str}`);
-  }
-
-  getId() {
-    return this.node.id;
   }
   
   // Need to check logic of these two...returns bits or bytes ???
