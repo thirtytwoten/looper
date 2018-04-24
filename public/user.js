@@ -9,7 +9,10 @@
 let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 
 class User {
-  constructor(userid){
+  constructor(userid, stationid){
+    this.userid = userid;
+    this.stationid = stationid;
+    this.stationOwner = userid === stationid;
     this.node = new Peer(userid, peerServerInfo);
     this.configureNode(this.node);
     this.connections = [];
@@ -47,13 +50,13 @@ class User {
         this.throughput[sender].push(d.payload);
       
         if(d.type === 'msg'){
-          //console.log('data: ' + d.data.data);
-          displayMsg(c.peer, d.data); // function in station.hbs
-		  //this.latencies[sender].push(d.latency);
-		  //this.throughput[sender].push(d.bitSize);
+          displayMsg(d.author, d.data); // function in station.hbs
+          if(this.stationOwner) { // propegate to other nodes if station owner
+            this.connections.forEach( (nodeid) => {
+              this.transmit(nodeid, d);
+            });
+          }
         } else if (d.type === 'seqChange'){
-		  //this.latencies[sender].push(d.latency);
-		  //this.throughput[sender].push(d.bitSize);
           updateSeq(d.data);
         } else if(d.type === 'PianoChange'){
           console.log('Pianodata: ' + data);
@@ -92,8 +95,17 @@ class User {
     }
   }
 
-  transmitMsg(nodeId, msg) {
-    this.transmit(nodeId, {type: 'msg', data: msg})
+  chat(msg) {
+    if(this.stationOwner){
+      // if station owner, log and propegate to all users
+      displayMsg(this.userid, msg);
+      this.connections.forEach( (nodeid) => {
+        this.transmit(nodeid, {type: 'msg', data: msg, author: this.userid});
+      });
+    } else {
+      // only send to station owner (who will propegate out and back [log msg when it comes back])
+      this.transmit(this.stationid, {type: 'msg', data: msg, author: this.userid});
+    }
   }
 
   transmitSeqChange(nodeId, data) {
@@ -126,8 +138,7 @@ class User {
     for (let i = 0; i < conns.length; i++){
       conns[i].send(str);
     }
-    
-    
+    console.log(`transmit: ${str}`);
   }
 
   getId() {

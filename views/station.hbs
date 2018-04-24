@@ -170,19 +170,6 @@
   </div>
   </div>
 
-
-{{!--   <div>
-    <h2 id='station-id'>Station Id: </h2>
-    <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
-      <h3>Enter Friend's Email:<h3>
-      <input id="email" type="text" maxlength="64" style="width:98%;" value="" />
-      <input type="submit" value="Invite" />
-    </form>
-  </div> --}}
-<!--/div>
-
-<div style="clear:both"></div-->
-
 <script type="text/javascript">
   // load data embedded in html as js vars
   let userid = $('#userid').data('userid');
@@ -197,7 +184,6 @@
   //let user = new User(userid;
 
   // set station info
-  // let Tracker = [];
   $('#node-id').text(`You are: ${user.node.id}`);
   $('#station-id').text(`Station owner: ${station.ownerid}`);
 
@@ -207,37 +193,24 @@
     console.log(peers);
     $('ul#peers').empty();
     peers.forEach((p)=>{
-      // if (Tracker.indexOf(p) == -1){
-      //   Tracker.unshift(p);
-        $('ul#peers').append(`<li class="list-group-item">${p}</li>`);
-      // }
+      $('ul#peers').append(`<li class="list-group-item">${p}</li>`);
     });
   }
-
 
   document.getElementById("form").onsubmit = function(e) {
     e.preventDefault();
     var msg = $('#text').val();
-    $('ul#peermsg').append(`<li class="list-group-item">${user.node.id}: ${msg}</li>`);
-    user.connections.forEach( (nodeid) => {
-      user.transmitMsg(nodeid,msg);
-    });
+    user.chat(msg);
     $('#text').val('');
     $('#text').focus();
   };
 
   function displayMsg(peerId, msg){
-    $("ul#peermsg").append(`<li class="list-group-item">${peerId} :${msg}</li>`)
+    $("ul#peermsg").append(`<li class="list-group-item">${peerId}: ${msg}</li>`)
   }
 
-  // let IdTracker = []
-  if(userid !== stationid){//&& Tracker.indexOf(userid) == -1){
+  if(userid !== stationid){
     station.join(user);
-    // Tracker.unshift(userid);
-    // console.log(IdTracker);
-    // serverLink.emit('joinStation', stationid, userid);
-    // user.connect(stationid);
-    // console.log('joinStation');
   }
 
 </script>
