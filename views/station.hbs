@@ -303,7 +303,7 @@
     $("#keys li").click(function(){
       pianoClick(this.id);
       user.connections.forEach( (nid) => {
-        user.transmitPiano(nid,this.id);
+        user.transmitPianoClick(nid,this.id);
       });
     });
   });
@@ -369,6 +369,7 @@
     }
     if(userid === user.userid){
       if(!$(selector).hasClass('active')){ $(selector).addClass('active') }
+
     }
   }
 

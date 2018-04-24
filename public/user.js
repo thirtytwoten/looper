@@ -58,7 +58,7 @@ class User {
           }
         } else if (d.type === 'seqChange'){
           updateSeq(d.data);
-        } else if(d.type === 'PianoChange'){
+        } else if(d.type === 'PianoClick'){
           console.log('Pianodata: ' + data);
           pianoClick(d.data); // function in station.hbs
         } else if (d.type === 'seqInit'){
@@ -120,8 +120,8 @@ class User {
     this.transmit(nodeId, {type: 'seqInit', data: pattern})
   }
 
-  transmitPiano(nodeId, Id) {
-    this.transmit(nodeId, {type: 'PianoChange', data: Id})
+  transmitPianoClick(nodeId, Id) {
+    this.transmit(nodeId, {type: 'PianoClick', data: Id})
   }
 
   transmit(nodeId, data) {
