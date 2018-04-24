@@ -301,14 +301,22 @@
   };
   $(document).ready(function(){
     $("#keys li").click(function(){
-      var dist = new Tone.Distortion(2).toMaster();
-      var synth = new Tone.Synth().connect(dist);
-      synth.triggerAttackRelease(pianoFrequency(this.id), "8n");
+      pianoClick(this.id);
       user.connections.forEach( (nid) => {
         user.transmitPiano(nid,this.id);
       });
     });
   });
+
+  // if user plays piano by mouse, the note is sustained for a set amount of time
+  function pianoClick (ID){
+    newSynth().triggerAttackRelease(pianoFrequency(ID), "8n");
+  }
+
+  function newSynth() {
+    let dist = new Tone.Distortion(2).toMaster();
+    return new Tone.Synth().connect(dist);
+  }
 
   let keyMap = {
     // bottom row
@@ -347,22 +355,32 @@
     'KeyP' : 31 //C
   }
 
-  document.addEventListener('keydown', function(down_event) {
-    let ID = keyMap[down_event.code];
+  let activeSounds = {};
+
+  document.addEventListener('keydown',(e)=>{ pianoKeyPress(user.userid, e.code) });
+  document.addEventListener('keyup', (e)=>{ pianoKeyRelease(user.userid, e.code) });
+
+  function pianoKeyPress(userid, keyCode) {
+    let ID = keyMap[keyCode];
     let selector = `#keys li#${ID}`;
-    if(!$(selector).hasClass('active')){
-      $(selector).addClass('active');
-      var dist = new Tone.Distortion(2).toMaster();
-      var synth = new Tone.Synth().connect(dist);
-      synth.triggerAttack(pianoFrequency(ID));
-      document.addEventListener('keyup', function(up_event) {
-          if(up_event.code === down_event.code) {
-            $(selector).removeClass('active');
-            synth.triggerRelease();
-          }
-        });
+    if(!activeSounds[`${userid}-${keyCode}`]){
+      activeSounds[`${userid}-${keyCode}`] = newSynth();
+      activeSounds[`${userid}-${keyCode}`].triggerAttack(pianoFrequency(ID));
     }
-  });
+    if(userid === user.userid){
+      if(!$(selector).hasClass('active')){ $(selector).addClass('active') }
+    }
+  }
+
+  function pianoKeyRelease(userid, keyCode) {
+    if(userid === user.userid){
+      let ID = keyMap[keyCode];
+      let selector = `#keys li#${ID}`;
+      $(selector).removeClass('active');
+    }
+    activeSounds[`${userid}-${keyCode}`] && activeSounds[`${userid}-${keyCode}`].triggerRelease();
+    activeSounds[`${userid}-${keyCode}`] = null;
+  }
 
   function sendMail() {
     var email = document.getElementById("email").value;

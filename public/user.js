@@ -60,7 +60,7 @@ class User {
           updateSeq(d.data);
         } else if(d.type === 'PianoChange'){
           console.log('Pianodata: ' + data);
-          updatePiano(d.data); // function in station.hbs
+          pianoClick(d.data); // function in station.hbs
         } else if (d.type === 'seqInit'){
           console.log('seqInit event');
           initSeq(d.data); // function in station.hbs
