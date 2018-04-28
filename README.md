@@ -2,7 +2,7 @@
 
 ### Description
 
-Looper is a peer-to-peer music creation web application that utilizes the Web Audio API and WebRTC. This project was created by Ibtehaj Alzahrani, Emeka Arene, Golder Kamuzora, and Bethany Sumner as a project for CS6675: Advanced Internet Computing Systmes and Application Development, taught by Professor Ling Liu at Georgia Tech.
+Looper is a peer-to-peer music creation web application that utilizes the Web Audio API and WebRTC. Looper was created by Ibtehaj Alzahrani, Emeka Arene, Golder Kamuzora, and Bethany Sumner as a class project for CS6675: Advanced Internet Computing Systmes and Application Development, taught by Professor Ling Liu at Georgia Tech.
 
 ### How to Run
 
