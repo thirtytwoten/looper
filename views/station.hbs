@@ -143,7 +143,7 @@
           <div class = "card" style = "padding-left: 0px; background-color:#e8a610;">
           <div class = "card-body">
           <h3 class = "display-4 text-danger">Debug Log</h3>
-          <p>Todo...</p>
+          <ul id= "log"></ul>
         </div>
       </div>
     </div>
@@ -151,7 +151,14 @@
     </div>
   </div>
   </div>
-
+  <div>
+    <h2 id='station-id'>Station Id: </h2>
+    <form action="javascript:sendMail();" name="pmForm" id="pmForm" method="post">
+      <h3>Enter Friend's Email:<h3>
+      <input id="email" type="text" maxlength="64" style="width:98%;" value="" />
+      <input type="submit" value="Invite" />
+    </form>
+  </div>
 <!--/div>
 
 <div style="clear:both"></div-->
@@ -200,7 +207,7 @@
   };
 
   function displayMsg(peerId, msg){
-    $("ul#peermsg").append(`<li>${peerId} :${msg}</li>`)
+    $("ul#peermsg").append(`<li class="list-group-item">${peerId} :${msg}</li>`)
   }
 
   // let IdTracker = []
@@ -213,9 +220,9 @@
     // console.log('joinStation');
   }
 
-//</script>
+</script>
 
-//<script>
+<script>
   let remoteAuthor;
 
   let context = new (window.AudioContext || window.webkitAudioContext)();
@@ -245,20 +252,23 @@
   function seqChange(data) {
     console.log('seqChange: ' + JSON.stringify(data));
     let author = remoteAuthor || user.getId();
-    displayLog(author, `set [${data.row},${data.column}] to ${data.state}`);
+    $('ul#log').append(`<li>${user.node.id}: set [${data.row},${data.column}] to ${data.state}</li>`);
     //$('ul#log').append(`<li>${user.node.id}: ${data.state}</li>`);
     // console.log(user.connections);
     // console.log("connections");
     if(!remoteAuthor || user.getId()===station.ownerid){
       user.connections.forEach( (nid) => {
-        user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+        if (nid !== remoteAuthor) { // no need to transmit back to person who made the changes
+          user.transmitSeqChange(nid, Object.assign(data,{author: remoteAuthor || user.getId()}));
+          user.transmitSeqChangeLog(nid, `set [${data.row},${data.column}] to ${data.state}`);
+        }
       });
     }
     remoteAuthor = null;
 
 	// Show latencies for this node's connections
-	user.showLatency();
-	user.showThroughput();
+	//user.showLatency();
+	//user.showThroughput();
   }
 
   function trackChanges(){
@@ -268,14 +278,16 @@
   }
 
   function updateSeq(data){
-    // update cell on sequencer (TODO: move to SoundMatrix class)
-    remoteAuthor = data.author;
+    // update cell on sequencer
+    if(data.author !== user.getId()){ //(just in case change ended up getting propegated back to author)
+      remoteAuthor = data.author;
+    }
     matrix.sequencer.matrix.set.cell(data.column, data.row, data.state);
   }
 
-  function displayLog(nodeId, msg){
-    console.log(`${nodeId}: ${msg}`);
-    $('ul#log').append(`<li>${nodeId}: ${msg}</li>`);
+  function displayLog(nodeId, data){
+    console.log(`${nodeId}: ${data}`);
+    $('ul#log').append(`<li>${nodeId}: ${data}</li>`);
   }
 
   function initSeq(data) {
@@ -303,12 +315,34 @@
       var dist = new Tone.Distortion(2).toMaster();
       var synth = new Tone.Synth().connect(dist);
       synth.triggerAttackRelease(pianoFrequency(this.id), "8n");
+      user.connections.forEach( (nid) => {
+        user.transmitPiano(nid,this.id);
       });
+    });
   });
+  //if(user.getId()===station.ownerid){
+  //  trackPianoChanges();
+  //}
+  function updatePiano (ID){
+      console.log(ID);
+      var dist = new Tone.Distortion(2).toMaster();
+      var synth = new Tone.Synth().connect(dist);
+      synth.triggerAttackRelease(pianoFrequency(ID), "8n");
+  }
+
+
+  function sendMail() {
+    var email = document.getElementById("email").value;
+    var body = `${user.node.id}: would like you to join his/her station!\n\n Click the link below to access the station! \n http://${window.location.hostname}:${window.location.port}\\station\\${station.ownerid}\n`;
+    //var emailF = 'mailto:'+email+'?subject=Invitation&body=Hello! \nI would like you to join my station!'
+    var link = `mailto: ${email}?cc=&subject=Looper Invitation!&body=${body}`;
+    console.log(link);
+    window.location.href = link;
+  }
 </script>
 
 <br/> <br/> <br/>
-<!-- Chat Script -->
+
 <br/> <br/> <br/>
 
 </body>

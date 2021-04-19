@@ -9,11 +9,11 @@
 let peerServerInfo = {host: window.location.hostname , port: window.location.port, path: '/ps'};
 
 class User {
-  constructor(userid, stationid){
+  constructor(userid){
     this.node = new Peer(userid, peerServerInfo);
     this.configureNode(this.node);
     this.connections = [];
-	this.hostStation = stationid;
+	//this.hostStation = stationid;
 	//this.isStation = false;
 	// This will be a dictionary, and each node will have one.
 	// key : userID of a node connected to this one
@@ -36,38 +36,43 @@ class User {
       if(!this.connections.includes(c.peer)){
         // make back&forth connection
         this.connect(c.peer);
-		// add peer as key in latency tracker.
-		this.latencies[c.peer] = [];
-		this.throughput[c.peer] = [];
       }
       c.on('data', (data) => {
-		let d = JSON.parse(data);
-		// Handle latency measurements
+        let d = JSON.parse(data);
+        // Handle latency measurements
         d["receivedAt"] = Date.now();
         d["latency"] = d.receivedAt - d.sentAt;
-		let sender = d.sentBy;
-		this.latencies[sender].push(d.latency);
-		this.throughput[sender].push(d.bitSize);
-		
-		// Log and process the data as needed.
-        //let d = JSON.parse(data);
+        let sender = d.sentBy;
+        this.latencies[sender].push(d.latency);
+        this.throughput[sender].push(d.payload);
+      
         if(d.type === 'msg'){
-          console.log('data: ' + data);
+          //console.log('data: ' + d.data.data);
           displayMsg(c.peer, d.data); // function in station.hbs
+		  //this.latencies[sender].push(d.latency);
+		  //this.throughput[sender].push(d.bitSize);
         } else if (d.type === 'seqChange'){
+		  //this.latencies[sender].push(d.latency);
+		  //this.throughput[sender].push(d.bitSize);
           updateSeq(d.data);
-        }
-			
-		// Handle Latency measurements
-		/* Commented out since we have not implemented "station nodes"
-
-		if (this.node.isStation) {
-			this.node.latencies[sender].push(data.latency);
-		}*/
-        else if (d.type === 'seqInit'){
+        } else if(d.type === 'PianoChange'){
+          console.log('Pianodata: ' + data);
+          updatePiano(d.data); // function in station.hbs
+        } else if(d.type === 'LogData'){
+          console.log('LogData: ' + d.data);
+          console.log('SentBy: ' + d.sentBy);
+          displayLog(d.sentBy, d.data); // function in station.hbs
+        } else if (d.type === 'seqInit'){
           console.log('seqInit event');
           initSeq(d.data); // function in station.hbs
         }
+        // Handle Latency measurements
+        /* Commented out since we have not implemented "station nodes"
+        if (this.node.isStation) {
+          this.node.latencies[sender].push(data.latency);
+        }*/
+        this.showLatency();
+        this.showThroughput();
       });
       
       c.on('close', () => {
@@ -83,6 +88,8 @@ class User {
   connect(nodeId) {
     let c = this.node.connect(nodeId);
     this.connections.push(c.peer);
+    this.latencies[c.peer] = [];
+    this.throughput[c.peer] = [];
     if (station.ownerid === this.getId()) {
       // hack to make init happen after connection is formed -- TODO fix this
       setTimeout(()=>{this.transmitInitData(c.peer, matrix.getPattern()), 2000});
@@ -97,24 +104,34 @@ class User {
     this.transmit(nodeId, {type: 'seqChange', data: data});
   }
 
+  transmitSeqChangeLog(nodeId, data) {
+    this.transmit(nodeId, {type: 'LogData', data: data});
+  }
+
   transmitInitData(nodeId, pattern) {
     this.transmit(nodeId, {type: 'seqInit', data: pattern})
   }
 
+  transmitPiano(nodeId, Id) {
+    this.transmit(nodeId, {type: 'PianoChange', data: Id})
+  }
+
   transmit(nodeId, data) {
     data["sentAt"] = Date.now();
-	data["sentBy"] = this.node.id;
+    data["sentBy"] = this.node.id;
 	
-	// This is questionable...size of data calculated before assigning it.
-	let datSize = this.dataSize(data);
-	data["bitSize"] = datSize;
+    // This is questionable...size of data calculated before assigning it.
+    let datSize = this.dataSize(data);
+    data["payload"] = datSize;
 	
-	// Send the data to connected peers.
+    // Send the data to connected peers.
     let str = JSON.stringify(data);
     let conns = this.node.connections[nodeId];
     for (let i = 0; i < conns.length; i++){
       conns[i].send(str);
     }
+    
+    
   }
 
   getId() {
